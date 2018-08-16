@@ -14,6 +14,7 @@ A Smart Source Map Loader for Webpack
 
 [![travis-ci](https://travis-ci.org/AlexanderOMara/smart-source-map-loader.svg?branch=master)](https://travis-ci.org/AlexanderOMara/smart-source-map-loader)
 
+[![appveyor](https://ci.appveyor.com/api/projects/status/wmbqqu9943hsvgn7/branch/master?svg=true)](https://ci.appveyor.com/project/AlexanderOMara/smart-source-map-loader/branch/master)
 
 # Overview
 
