@@ -3,6 +3,7 @@
 A Smart Source Map Loader for Webpack
 
 [![Build Status](https://travis-ci.org/AlexanderOMara/smart-source-map-loader.svg?branch=master)](https://travis-ci.org/AlexanderOMara/smart-source-map-loader)
+[![Dependencies](https://david-dm.org/AlexanderOMara/smart-source-map-loader.svg)](https://david-dm.org/AlexanderOMara/smart-source-map-loader)
 
 
 # Overview
