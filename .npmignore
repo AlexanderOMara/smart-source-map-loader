@@ -16,6 +16,7 @@ yarn-error.log*
 *.tgz
 
 .travis.yml
+appveyor.yml
 
 yarn.lock
 
