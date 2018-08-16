@@ -1,14 +1,14 @@
 language: node_js
 
 node_js:
-  - "v10.8.0"
-  - "v8.11.4"
-  - "v6.14.4"
+  - 'v10.8.0'
+  - 'v8.11.4'
+  - 'v6.14.4'
 
 cache:
   yarn: true
   directories:
-    - "node_modules"
+    - 'node_modules'
 
 script:
   - yarn run clean
