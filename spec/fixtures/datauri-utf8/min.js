@@ -1,0 +1,3 @@
+ ONE.foo=function(a){return baz(a);};
+ TWO.inc=function(a){return a+1;};
+//# sourceMappingURL=data:application/source-map;charset=utf-8;utf8,%7B%0A%09%22version%22%3A%203%2C%0A%09%22file%22%3A%20%22min.js%22%2C%0A%09%22names%22%3A%20%5B%22bar%22%2C%20%22baz%22%2C%20%22n%22%5D%2C%0A%09%22sources%22%3A%20%5B%22one.js%22%2C%20%22two.js%22%5D%2C%0A%09%22sourcesContent%22%3A%20%5B%0A%09%09%22%20ONE.foo%20%3D%20function%20(bar)%20%7B%5Cn%20%20%20return%20baz(bar)%3B%5Cn%20%7D%3B%22%2C%0A%09%09%22%20TWO.inc%20%3D%20function%20(n)%20%7B%5Cn%20%20%20return%20n%20%2B%201%3B%5Cn%20%7D%3B%22%0A%09%5D%2C%0A%09%22sourceRoot%22%3A%20%22%22%2C%0A%09%22mappings%22%3A%20%22CAAC%2CIAAI%2CIAAM%2CSAAUA%2CGAClB%2COAAOC%2CIAAID%3BCCDb%2CIAAI%2CIAAM%2CSAAUE%2CGAClB%2COAAOA%22%0A%7D%0A

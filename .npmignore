@@ -1,0 +1,36 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Node files
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tgz
+
+yarn.lock
+
+/package-lock.json
+/.gitignore
+/.babelrc
+/.editorconfig
+/.eslintignore
+/.eslintrc.yaml
+/.tern-project
+/package-scripts.yml
+/gulpfile.babel.js
+/nodemon.json
+/spec
+/src
+
+/lib/**/*.spec.js
+/lib/**/*.spec.js.map
+/lib/**/*.spec.mjs
+/lib/**/*.spec.mjs.map

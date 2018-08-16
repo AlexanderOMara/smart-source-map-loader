@@ -1,0 +1,6 @@
+{
+	"ignore": [
+		"lib/*"
+	],
+	"ext": "js mjs jsx mjsx ts tsx"
+}
