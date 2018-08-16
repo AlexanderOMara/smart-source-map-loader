@@ -3,10 +3,15 @@
 A Smart Source Map Loader for Webpack
 
 [![npm](https://img.shields.io/npm/v/smart-source-map-loader.svg)](https://npmjs.com/package/smart-source-map-loader)
+
 [![node](https://img.shields.io/node/v/smart-source-map-loader.svg)](https://nodejs.org)
+
 [![dependencies](https://david-dm.org/AlexanderOMara/smart-source-map-loader.svg)](https://david-dm.org/AlexanderOMara/smart-source-map-loader)
+
 [![downloads](https://img.shields.io/npm/dm/smart-source-map-loader.svg)](https://npmcharts.com/compare/smart-source-map-loader?minimal=true)
+
 [![size](https://packagephobia.now.sh/badge?p=smart-source-map-loader)](https://packagephobia.now.sh/result?p=smart-source-map-loader)
+
 [![travis-ci](https://travis-ci.org/AlexanderOMara/smart-source-map-loader.svg?branch=master)](https://travis-ci.org/AlexanderOMara/smart-source-map-loader)
 
 
