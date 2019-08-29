@@ -1,6 +1,6 @@
 export * from './meta';
 
-import path from 'path';
+import {dirname as pathDirname} from 'path';
 
 import loaderUtils from 'loader-utils';
 import parseDataURL from 'data-urls';
@@ -191,7 +191,7 @@ export default async function(source, map, meta) {
 	}
 
 	// Get context of the file that has the source map.
-	const mapFileContext = path.dirname(mapFile);
+	const mapFileContext = pathDirname(mapFile);
 
 	// Try to parse the map data.
 	let mapData = null;

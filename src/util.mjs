@@ -1,6 +1,6 @@
-import url from 'url';
-import path from 'path';
-import fs from 'fs';
+import {resolve as urlResolve} from 'url';
+import {relative as pathRelative} from 'path';
+import {readFile} from 'fs';
 
 const rURL = /^(?:[\w+\-.]+:)?\/\//;
 const rDataURI = /^data:/i;
@@ -57,7 +57,7 @@ export function joinURL(...parts) {
  * @returns {string} Full path.
  */
 export function resolveURL(from, to) {
-	return url.resolve(from, to).replace(/\/$/, '');
+	return urlResolve(from, to).replace(/\/$/, '');
 }
 
 /**
@@ -105,7 +105,7 @@ export function sourceMapRebase(map, base) {
  * @returns {string} Resulting path.
  */
 export function pathRelativeIfSub(from, to) {
-	return to.indexOf(from) ? to : path.relative(from, to);
+	return to.indexOf(from) ? to : pathRelative(from, to);
 }
 
 /**
@@ -162,7 +162,7 @@ export function stringOrBufferCast(data, ...args) {
  */
 export function readFileAsync(path, options) {
 	const r = new Promise((resolve, reject) => {
-		fs.readFile(path, options, (err, data) => {
+		readFile(path, options, (err, data) => {
 			if (err) {
 				reject(err);
 				return;
