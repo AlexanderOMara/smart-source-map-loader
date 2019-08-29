@@ -29,6 +29,6 @@ matrix:
 
 script:
 - npm run clean
-  - if [ "$NO_LINT" != "1" ]; then npm run lint; fi
+- if [ "$NO_LINT" != "1" ]; then npm run lint; fi
 - npm run build
 - npm run test
