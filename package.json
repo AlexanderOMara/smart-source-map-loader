@@ -1,7 +1,7 @@
 {
 	"name": "smart-source-map-loader",
 	"description": "A Smart Source Map Loader for Webpack",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"keywords": [
 		"source-map",
 		"source-maps",
