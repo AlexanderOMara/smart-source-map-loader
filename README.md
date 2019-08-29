@@ -11,6 +11,7 @@ A Smart Source Map Loader for Webpack
 
 [![travis-ci](https://travis-ci.org/AlexanderOMara/smart-source-map-loader.svg?branch=master)](https://travis-ci.org/AlexanderOMara/smart-source-map-loader)
 
+
 # Overview
 
 This is a module which will read any existing source maps on a file and pass them to Webpack. In this way compiled code can be bundled with source maps to the original source files.
