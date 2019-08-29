@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
-import util from 'util';
 
 import gulp from 'gulp';
 import gulpRename from 'gulp-rename';
@@ -12,9 +11,33 @@ import gulpSourcemaps from 'gulp-sourcemaps';
 import gulpBabel from 'gulp-babel';
 import execa from 'execa';
 import del from 'del';
+import pump from 'pump';
 
-const readFile = util.promisify(fs.readFile);
-const pipeline = util.promisify(stream.pipeline);
+async function readFile(path, opts = {}) {
+	const r = await new Promise((resolve, reject) => {
+		fs.readFile(path, opts, (err, data) => {
+			if (err) {
+				reject(err);
+				return;
+			}
+			resolve(data);
+		});
+	});
+	return r;
+}
+
+async function pipeline(...args) {
+	const r = await new Promise((resolve, reject) => {
+		(stream.pipeline || pump)(...args, (err, data) => {
+			if (err) {
+				reject(err);
+				return;
+			}
+			resolve(data);
+		});
+	});
+	return r;
+}
 
 async function exec(cmd, args = []) {
 	await execa(cmd, args, {
