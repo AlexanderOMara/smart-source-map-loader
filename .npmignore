@@ -13,21 +13,19 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+report.*.json
 *.tgz
-
-.travis.yml
-appveyor.yml
-
 yarn.lock
 
 /package-lock.json
+/.gitattributes
 /.gitignore
 /.babelrc
 /.editorconfig
 /.eslintignore
 /.eslintrc.yaml
 /.tern-project
-/package-scripts.yml
+/.travis.yml
 /gulpfile.babel.js
 /nodemon.json
 /spec

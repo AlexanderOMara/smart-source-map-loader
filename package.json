@@ -25,12 +25,13 @@
 	"repository": "https://github.com/AlexanderOMara/smart-source-map-loader.git",
 	"bugs": "https://github.com/AlexanderOMara/smart-source-map-loader/issues",
 	"scripts": {
-		"clean": "nps clean",
-		"lint": "nps lint",
-		"build": "nps build",
-		"test": "nps test",
-		"watch": "nps watch",
-		"prepack": "nps clean lint build test"
+		"clean": "gulp clean",
+		"lint": "gulp lint",
+		"build": "gulp build",
+		"test": "gulp test",
+		"all": "gulp all",
+		"watch": "nodemon --exec 'gulp watched'",
+		"prepack": "gulp prepack"
 	},
 	"peerDependencies": {
 		"webpack": "^4.0.0"
@@ -44,9 +45,11 @@
 		"@babel/preset-env": "^7.5.5",
 		"@babel/register": "^7.5.5",
 		"babel-loader": "^8.0.6",
+		"del": "^5.1.0",
 		"eslint": "^6.2.2",
 		"eslint-plugin-import": "^2.18.2",
 		"eslint-plugin-jsdoc": "^15.8.3",
+		"execa": "^2.0.4",
 		"fs-extra": "^8.1.0",
 		"gulp": "^4.0.2",
 		"gulp-babel": "^8.0.0",

@@ -1,6 +1,8 @@
+import fs from 'fs';
 import path from 'path';
+import stream from 'stream';
+import util from 'util';
 
-import fse from 'fs-extra';
 import gulp from 'gulp';
 import gulpRename from 'gulp-rename';
 import gulpInsert from 'gulp-insert';
@@ -8,70 +10,59 @@ import gulpFilter from 'gulp-filter';
 import gulpReplace from 'gulp-replace';
 import gulpSourcemaps from 'gulp-sourcemaps';
 import gulpBabel from 'gulp-babel';
-import pump from 'pump';
+import execa from 'execa';
+import del from 'del';
 
-async function pumpP(...args) {
-	const r = await new Promise((resolve, reject) => {
-		const r = pump(...args, err => {
-			if (err) {
-				reject(err);
-				return;
-			}
-			resolve(r);
-		});
+const readFile = util.promisify(fs.readFile);
+const pipeline = util.promisify(stream.pipeline);
+
+async function exec(cmd, args = []) {
+	await execa(cmd, args, {
+		preferLocal: true,
+		stdio: 'inherit'
 	});
-	return r;
 }
 
 async function packageJSON() {
-	packageJSON.json = packageJSON.json || fse.readFile('package.json', 'utf8');
+	packageJSON.json = packageJSON.json || readFile('package.json', 'utf8');
 	return JSON.parse(await packageJSON.json);
 }
 
 async function babelrc() {
-	babelrc.json = babelrc.json || fse.readFile('.babelrc', 'utf8');
-	const r = JSON.parse(await babelrc.json);
-
-	// Prevent .babelrc file from being loaded again by the plugin.
-	r.babelrc = false;
-	return r;
+	babelrc.json = babelrc.json || readFile('.babelrc', 'utf8');
+	return Object.assign(JSON.parse(await babelrc.json), {
+		babelrc: false
+	});
 }
 
-function babelrcGetEnv(opts) {
-	for (const preset of opts.presets) {
+async function babelTarget(src, srcOpts, dest, modules) {
+	// Change module.
+	const babelOptions = await babelrc();
+	for (const preset of babelOptions.presets) {
 		if (preset[0] === '@babel/preset-env') {
-			return preset[1];
+			preset[1].modules = modules;
 		}
 	}
-	return null;
-}
-
-async function babelLib(modules) {
-	const src = ['src/**/*.mjs'];
-	const dest = 'lib';
-
-	const babelOptions = await babelrc();
-	babelrcGetEnv(babelOptions).modules = modules ? false : 'commonjs';
 
 	// Read the package JSON.
 	const pkg = await packageJSON();
 
 	// Filter meta data file and create replace transform.
-	const filterMeta = gulpFilter(['*/meta.mjs'], {restore: true});
+	const filterMeta = gulpFilter(['*/meta.ts'], {restore: true});
 	const filterMetaReplaces = [
 		["'@VERSION@'", JSON.stringify(pkg.version)],
 		["'@NAME@'", JSON.stringify(pkg.name)]
 	].map(v => gulpReplace(...v));
 
-	await pumpP(
-		gulp.src(src),
+	await pipeline(...[
+		gulp.src(src, srcOpts),
 		filterMeta,
 		...filterMetaReplaces,
 		filterMeta.restore,
 		gulpSourcemaps.init(),
 		gulpBabel(babelOptions),
 		gulpRename(path => {
-			if (modules && path.extname === '.js') {
+			if (!modules && path.extname === '.js') {
 				path.extname = '.mjs';
 			}
 		}),
@@ -89,9 +80,112 @@ async function babelLib(modules) {
 			return contents;
 		}),
 		gulp.dest(dest)
-	);
+	].filter(Boolean));
 }
 
-export async function buildLibCjs() {
-	await babelLib(false);
+async function eslint(strict) {
+	try {
+		await exec('eslint', ['--ext', 'js,mjs,jsx,mjsx,ts,tsx', '.']);
+	}
+	catch (err) {
+		if (strict) {
+			throw err;
+		}
+	}
 }
+
+// clean
+
+gulp.task('clean:logs', async () => {
+	await del([
+		'npm-debug.log*',
+		'yarn-debug.log*',
+		'yarn-error.log*'
+	]);
+});
+
+gulp.task('clean:lib', async () => {
+	await del([
+		'lib'
+	]);
+});
+
+gulp.task('clean', gulp.parallel([
+	'clean:logs',
+	'clean:lib'
+]));
+
+// lint (watch)
+
+gulp.task('lintw:es', async () => {
+	await eslint(false);
+});
+
+gulp.task('lintw', gulp.parallel([
+	'lintw:es'
+]));
+
+// lint
+
+gulp.task('lint:es', async () => {
+	await eslint(true);
+});
+
+gulp.task('lint', gulp.parallel([
+	'lint:es'
+]));
+
+// build
+
+gulp.task('build:lib:cjs', async () => {
+	await babelTarget(['src/**/*.mjs'], {}, 'lib', 'commonjs');
+});
+
+gulp.task('build:lib', gulp.parallel([
+	'build:lib:cjs'
+]));
+
+gulp.task('build', gulp.parallel([
+	'build:lib'
+]));
+
+// test
+
+gulp.task('test:node', async () => {
+	await exec('jasmine');
+});
+
+gulp.task('test', gulp.parallel([
+	'test:node'
+]));
+
+// all
+
+gulp.task('all', gulp.series([
+	'clean',
+	'lint',
+	'build',
+	'test'
+]));
+
+// watched
+
+gulp.task('watched', gulp.series([
+	'clean',
+	'lintw',
+	'build',
+	'test'
+]));
+
+// prepack
+
+gulp.task('prepack', gulp.series([
+	'clean',
+	'build'
+]));
+
+// default
+
+gulp.task('default', gulp.series([
+	'all'
+]));
