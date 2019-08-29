@@ -9,6 +9,12 @@ const rComments = `(${rCommentLine}|${rCommentBlock})`;
 const rCommentEnd = `(${rComments}\\s*)$`;
 const rCommentEndMatch = new RegExp(rCommentEnd);
 
+/**
+ * Parse code for source map comment.
+ *
+ * @param {string} code JavaScript code.
+ * @returns {object} Parsed object.
+ */
 export function parse(code) {
 	const m = code.match(rCommentEndMatch);
 	if (!m) {
@@ -32,6 +38,12 @@ export function parse(code) {
 	};
 }
 
+/**
+ * Get possible paths from URL, decoded and not if different.
+ *
+ * @param {string} url URL to be parsed.
+ * @returns {Array} Possible paths.
+ */
 export function pathsFromURL(url) {
 	const decoded = decodeURISafe(url);
 	if (decoded && decoded !== url) {

@@ -17,12 +17,17 @@ import {
 	readFileAsync
 } from './util';
 import {Exception} from './exception';
-
 import {
 	parse as commentParse,
 	pathsFromURL as commentPathsFromURL
 } from './comment';
 
+/**
+ * Create resolver.
+ *
+ * @param {Function} resolve Resolve function.
+ * @returns {Function} Resolve function.
+ */
 function createResolver(resolve) {
 	const res = resolve;
 	return async function(context, request) {
@@ -39,6 +44,12 @@ function createResolver(resolve) {
 	};
 }
 
+/**
+ * Create resolver multiple from a resolver.
+ *
+ * @param {Function} resolver Resolve function.
+ * @returns {Function} Resolve function.
+ */
 function createResolverMulti(resolver) {
 	return async function(context, requests) {
 		for (const request of requests) {
@@ -54,6 +65,7 @@ function createResolverMulti(resolver) {
 	};
 }
 
+// eslint-disable-next-line import/no-default-export, jsdoc/require-jsdoc
 export default async function(source, map, meta) {
 	// eslint-disable-next-line no-invalid-this
 	const self = this;

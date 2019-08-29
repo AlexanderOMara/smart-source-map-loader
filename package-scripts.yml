@@ -2,7 +2,7 @@ scripts:
   lint:
     default: concurrently "nps lint.js"
     watch: concurrently "nps lint.js || true"
-    js: eslint .
+    js: eslint --ext js,mjs .
 
   clean:
     default: concurrently "nps clean.logs" "nps clean.lib"
