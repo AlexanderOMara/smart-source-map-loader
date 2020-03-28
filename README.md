@@ -78,8 +78,3 @@ Copyright (c) 2018-2020 Alexander O'Mara
 Licensed under the Mozilla Public License, v. 2.0.
 
 If this license does not work for you, feel free to contact me.
-
-
-# Donations
-
-If you find my software useful please consider making a donation on my website at [alexomara.com](https://alexomara.com).
