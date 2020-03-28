@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+
 // Older versions of node need a little help.
 // Transpile dependencies and polyfill their environment.
 
