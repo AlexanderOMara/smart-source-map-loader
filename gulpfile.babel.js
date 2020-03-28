@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-unassigned-import
+import './gulp/polyfill';
+
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';

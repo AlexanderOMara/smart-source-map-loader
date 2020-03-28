@@ -27,6 +27,7 @@ yarn.lock
 /.tern-project
 /.travis.yml
 /gulpfile.babel.js
+/gulp
 /nodemon.json
 /spec
 /src
