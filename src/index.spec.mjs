@@ -2,14 +2,16 @@
 
 import path from 'path';
 
-import webpack from 'webpack';
 import MemoryFs from 'memory-fs';
+import nodeRequireFunction from 'node-require-function';
 
 import {Exception} from './exception';
 
+const require = nodeRequireFunction();
+
 const exceptionMessagePrefix = (new Exception('')).message;
 
-async function webpackAsync(options, properties) {
+async function webpackAsync(webpack, options, properties) {
 	const compiler = webpack(options);
 	if (properties) {
 		for (const p of Object.keys(properties)) {
@@ -37,10 +39,10 @@ async function webpackAsync(options, properties) {
 	};
 }
 
-async function webpackMemory(info) {
+async function webpackMemory(webpack, info) {
 	const fnCode = 'test.js';
 	const fnMap = `${fnCode}.map`;
-	const {compiler, stats} = await webpackAsync({
+	const {compiler, stats} = await webpackAsync(webpack, {
 		entry: info.entry,
 		mode: 'development',
 		devtool: 'source-map',
@@ -103,10 +105,10 @@ function listSources(map, skipWebpack = true, sorted = true) {
 	};
 }
 
-describe('index', () => {
+function testFixtures(version, webpack) {
 	describe('fixtures', () => {
 		it('content', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/content/min'
 			});
 			const mapData = JSON.parse(map);
@@ -124,7 +126,7 @@ describe('index', () => {
 		});
 
 		it('indexed', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/indexed/min'
 			});
 			const mapData = JSON.parse(map);
@@ -142,7 +144,7 @@ describe('index', () => {
 		});
 
 		it('external', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/external/min'
 			});
 			const mapData = JSON.parse(map);
@@ -160,7 +162,7 @@ describe('index', () => {
 		});
 
 		it('content-and-external', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/content-and-external/min'
 			});
 			const mapData = JSON.parse(map);
@@ -178,7 +180,7 @@ describe('index', () => {
 		});
 
 		it('datauri-base64', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/datauri-base64/min'
 			});
 			const mapData = JSON.parse(map);
@@ -196,7 +198,7 @@ describe('index', () => {
 		});
 
 		it('datauri-utf8', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/datauri-utf8/min'
 			});
 			const mapData = JSON.parse(map);
@@ -214,7 +216,7 @@ describe('index', () => {
 		});
 
 		it('root-relative', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/root-relative/min'
 			});
 			const mapData = JSON.parse(map);
@@ -232,7 +234,7 @@ describe('index', () => {
 		});
 
 		it('root-relative-dot', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/root-relative-dot/min'
 			});
 			const mapData = JSON.parse(map);
@@ -250,7 +252,7 @@ describe('index', () => {
 		});
 
 		it('root-relative-dot-slash', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/root-relative-dot-slash/min'
 			});
 			const mapData = JSON.parse(map);
@@ -268,7 +270,7 @@ describe('index', () => {
 		});
 
 		it('root-relative-parent', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/root-relative-parent/min'
 			});
 			const mapData = JSON.parse(map);
@@ -286,7 +288,7 @@ describe('index', () => {
 		});
 
 		it('external-root', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/external-root/min'
 			});
 			const mapData = JSON.parse(map);
@@ -304,7 +306,7 @@ describe('index', () => {
 		});
 
 		it('sources-relative', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/sources-relative/min'
 			});
 			const mapData = JSON.parse(map);
@@ -322,7 +324,7 @@ describe('index', () => {
 		});
 
 		it('url-relative', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/url-relative/min'
 			});
 			const mapData = JSON.parse(map);
@@ -340,7 +342,7 @@ describe('index', () => {
 		});
 
 		it('url-encoded', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/url-encoded/min'
 			});
 			const mapData = JSON.parse(map);
@@ -358,7 +360,7 @@ describe('index', () => {
 		});
 
 		it('url-decoded', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/url-decoded/min'
 			});
 			const mapData = JSON.parse(map);
@@ -376,7 +378,7 @@ describe('index', () => {
 		});
 
 		it('none', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/none/min'
 			});
 			const mapData = JSON.parse(map);
@@ -393,7 +395,7 @@ describe('index', () => {
 		});
 
 		it('external-missing-one', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/external-missing-one/min'
 			});
 			const mapData = JSON.parse(map);
@@ -412,7 +414,7 @@ describe('index', () => {
 		});
 
 		it('external-missing-all', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/external-missing-all/min'
 			});
 			const mapData = JSON.parse(map);
@@ -431,7 +433,7 @@ describe('index', () => {
 		});
 
 		it('datauri-bad', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/datauri-bad/min'
 			});
 			const mapData = JSON.parse(map);
@@ -450,7 +452,7 @@ describe('index', () => {
 		});
 
 		it('map-json-invalid', async () => {
-			const {stats, map} = await webpackMemory({
+			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/map-json-invalid/min'
 			});
 			const mapData = JSON.parse(map);
@@ -468,4 +470,15 @@ describe('index', () => {
 			expect(message.indexOf(exceptionMessagePrefix)).toBe(0);
 		});
 	});
+}
+
+describe('index', () => {
+	for (const [version, wp] of [
+		['4.0.0', 'webpack-4-0-0'],
+		['4.44.2', 'webpack-4-44-2']
+	]) {
+		describe(`webpack: ${version}`, () => {
+			testFixtures(version, require(wp));
+		});
+	}
 });
