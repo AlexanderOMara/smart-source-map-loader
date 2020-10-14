@@ -14,7 +14,9 @@ const exceptionMessagePrefix = (new Exception('')).message;
 function webpackVersions() {
 	return [
 		['4.0.0', 'webpack-4-0-0'],
-		['4.44.2', 'webpack-4-44-2']
+		['4.44.2', 'webpack-4-44-2'],
+		['5.0.0', 'webpack-5-0-0'],
+		['latest', 'webpack']
 	];
 }
 
@@ -113,6 +115,10 @@ function listSources(map, skipWebpack = true, sorted = true) {
 }
 
 function testFixtures(version, webpack) {
+	const urlPrefix = +version.split('.')[0] < 5 ?
+		'webpack:///' :
+		'webpack://smart-source-map-loader/';
+
 	describe('fixtures', () => {
 		it('content', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
@@ -121,8 +127,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/content/one.js',
-				'webpack:///spec/fixtures/content/two.js'
+				`${urlPrefix}spec/fixtures/content/one.js`,
+				`${urlPrefix}spec/fixtures/content/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -139,8 +145,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/indexed/one.js',
-				'webpack:///spec/fixtures/indexed/two.js'
+				`${urlPrefix}spec/fixtures/indexed/one.js`,
+				`${urlPrefix}spec/fixtures/indexed/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -157,8 +163,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/external/one.js',
-				'webpack:///spec/fixtures/external/two.js'
+				`${urlPrefix}spec/fixtures/external/one.js`,
+				`${urlPrefix}spec/fixtures/external/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -175,8 +181,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/content-and-external/one.js',
-				'webpack:///spec/fixtures/content-and-external/two.js'
+				`${urlPrefix}spec/fixtures/content-and-external/one.js`,
+				`${urlPrefix}spec/fixtures/content-and-external/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -193,8 +199,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/datauri-base64/one.js',
-				'webpack:///spec/fixtures/datauri-base64/two.js'
+				`${urlPrefix}spec/fixtures/datauri-base64/one.js`,
+				`${urlPrefix}spec/fixtures/datauri-base64/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -211,8 +217,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/datauri-utf8/one.js',
-				'webpack:///spec/fixtures/datauri-utf8/two.js'
+				`${urlPrefix}spec/fixtures/datauri-utf8/one.js`,
+				`${urlPrefix}spec/fixtures/datauri-utf8/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -229,8 +235,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/root-relative/root/one.js',
-				'webpack:///spec/fixtures/root-relative/root/two.js'
+				`${urlPrefix}spec/fixtures/root-relative/root/one.js`,
+				`${urlPrefix}spec/fixtures/root-relative/root/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -247,8 +253,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/root-relative-dot/one.js',
-				'webpack:///spec/fixtures/root-relative-dot/two.js'
+				`${urlPrefix}spec/fixtures/root-relative-dot/one.js`,
+				`${urlPrefix}spec/fixtures/root-relative-dot/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -265,8 +271,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/root-relative-dot-slash/one.js',
-				'webpack:///spec/fixtures/root-relative-dot-slash/two.js'
+				`${urlPrefix}spec/fixtures/root-relative-dot-slash/one.js`,
+				`${urlPrefix}spec/fixtures/root-relative-dot-slash/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -283,8 +289,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/root/one.js',
-				'webpack:///spec/fixtures/root/two.js'
+				`${urlPrefix}spec/fixtures/root/one.js`,
+				`${urlPrefix}spec/fixtures/root/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -301,8 +307,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/external-root/map/src/one.js',
-				'webpack:///spec/fixtures/external-root/map/src/two.js'
+				`${urlPrefix}spec/fixtures/external-root/map/src/one.js`,
+				`${urlPrefix}spec/fixtures/external-root/map/src/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -319,8 +325,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/sources-relative/one.js',
-				'webpack:///spec/fixtures/sources-relative/two.js'
+				`${urlPrefix}spec/fixtures/sources-relative/one.js`,
+				`${urlPrefix}spec/fixtures/sources-relative/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -337,8 +343,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/url-relative/one.js',
-				'webpack:///spec/fixtures/url-relative/two.js'
+				`${urlPrefix}spec/fixtures/url-relative/one.js`,
+				`${urlPrefix}spec/fixtures/url-relative/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -355,8 +361,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/url-encoded/one.js',
-				'webpack:///spec/fixtures/url-encoded/two.js'
+				`${urlPrefix}spec/fixtures/url-encoded/one.js`,
+				`${urlPrefix}spec/fixtures/url-encoded/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -373,8 +379,8 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///spec/fixtures/url-decoded/one.js',
-				'webpack:///spec/fixtures/url-decoded/two.js'
+				`${urlPrefix}spec/fixtures/url-decoded/one.js`,
+				`${urlPrefix}spec/fixtures/url-decoded/two.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -391,7 +397,7 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///./spec/fixtures/none/min.js'
+				`${urlPrefix}./spec/fixtures/none/min.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -408,7 +414,7 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///./spec/fixtures/external-missing-one/min.js'
+				`${urlPrefix}./spec/fixtures/external-missing-one/min.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -427,7 +433,7 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///./spec/fixtures/external-missing-all/min.js'
+				`${urlPrefix}./spec/fixtures/external-missing-all/min.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -446,7 +452,7 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///./spec/fixtures/datauri-bad/min.js'
+				`${urlPrefix}./spec/fixtures/datauri-bad/min.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
@@ -465,7 +471,7 @@ function testFixtures(version, webpack) {
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
 			expect(sources.names).toEqual([
-				'webpack:///./spec/fixtures/map-json-invalid/min.js'
+				`${urlPrefix}./spec/fixtures/map-json-invalid/min.js`
 			]);
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
