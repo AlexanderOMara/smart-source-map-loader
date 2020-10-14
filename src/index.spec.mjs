@@ -12,16 +12,10 @@ const require = nodeRequireFunction();
 const exceptionMessagePrefix = (new Exception('')).message;
 
 function webpackVersions() {
-	const r = [['4.0.0', 'webpack']];
-	// eslint-disable-next-line no-process-env
-	if (process.env.SINGLE_VERSION) {
-		return r;
-	}
-	r.push(
-		['4.0.0', 'webpack'],
+	return [
+		['4.0.0', 'webpack-4-0-0'],
 		['4.44.2', 'webpack-4-44-2']
-	);
-	return r;
+	];
 }
 
 async function webpackAsync(webpack, options, properties) {

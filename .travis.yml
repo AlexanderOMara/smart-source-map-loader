@@ -6,13 +6,15 @@ matrix:
     node_js: v6.14.4
     env:
     - NO_LINT=1
-    - SINGLE_VERSION=1
+    before_install:
+    - npm install -g npm@4
 
   - os: linux
     node_js: v6.17.1 # LTS
     env:
     - NO_LINT=1
-    - SINGLE_VERSION=1
+    before_install:
+    - npm install -g npm@4
 
   - os: linux
     node_js: v8.17.0 # LTS
@@ -35,6 +37,7 @@ matrix:
     node_js: v14.6.0
 
 script:
+- npm --version
 - npm run clean
 - if [ "$NO_LINT" != "1" ]; then npm run lint; fi
 - npm run build
