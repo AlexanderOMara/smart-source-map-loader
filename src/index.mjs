@@ -122,8 +122,8 @@ export default async function(source, map, meta) {
 		mapInfo = stringAbbrev(parsed.url, 64, '...');
 
 		// Attempt to parse URL as a data URI.
-		const daraURI = parseDataURL(parsed.url);
-		if (!daraURI) {
+		const dataURI = parseDataURL(parsed.url);
+		if (!dataURI) {
 			emitWarning(
 				new Exception(`Failed to parse data URI: ${mapInfo}`)
 			);
@@ -133,7 +133,7 @@ export default async function(source, map, meta) {
 
 		// Attempt to decode source map content.
 		try {
-			mapCode = daraURI.body.toString();
+			mapCode = dataURI.body.toString();
 		}
 		catch (err) {
 			emitWarning(
