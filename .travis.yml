@@ -7,14 +7,14 @@ matrix:
     env:
     - NO_LINT=1
     before_install:
-    - npm install -g npm@4
+    - npm install -g npm@6.9.0
 
   - os: linux
     node_js: v6.17.1 # LTS
     env:
     - NO_LINT=1
     before_install:
-    - npm install -g npm@4
+    - npm install -g npm@6.9.0
 
   - os: linux
     node_js: v8.17.0 # LTS
