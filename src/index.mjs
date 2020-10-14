@@ -3,7 +3,6 @@ export * from './meta';
 import {dirname as pathDirname} from 'path';
 
 import loaderUtils from 'loader-utils';
-import parseDataURL from 'data-urls';
 
 import {
 	nullUndefined,
@@ -16,6 +15,9 @@ import {
 	stringOrBufferCast,
 	readFileAsync
 } from './util';
+import {
+	data
+} from './uri';
 import {Exception} from './exception';
 import {
 	parse as commentParse,
@@ -122,7 +124,7 @@ export default async function(source, map, meta) {
 		mapInfo = stringAbbrev(parsed.url, 64, '...');
 
 		// Attempt to parse URL as a data URI.
-		const dataURI = parseDataURL(parsed.url);
+		const dataURI = data(parsed.url);
 		if (!dataURI) {
 			emitWarning(
 				new Exception(`Failed to parse data URI: ${mapInfo}`)
@@ -133,7 +135,7 @@ export default async function(source, map, meta) {
 
 		// Attempt to decode source map content.
 		try {
-			mapCode = dataURI.body.toString();
+			mapCode = dataURI.body().toString(dataURI.charset);
 		}
 		catch (err) {
 			emitWarning(
