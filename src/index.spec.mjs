@@ -11,6 +11,19 @@ const require = nodeRequireFunction();
 
 const exceptionMessagePrefix = (new Exception('')).message;
 
+function webpackVersions() {
+	const r = [['4.0.0', 'webpack']];
+	// eslint-disable-next-line no-process-env
+	if (process.env.SINGLE_VERSION) {
+		return r;
+	}
+	r.push(
+		['4.0.0', 'webpack'],
+		['4.44.2', 'webpack-4-44-2']
+	);
+	return r;
+}
+
 async function webpackAsync(webpack, options, properties) {
 	const compiler = webpack(options);
 	if (properties) {
@@ -473,12 +486,9 @@ function testFixtures(version, webpack) {
 }
 
 describe('index', () => {
-	for (const [version, wp] of [
-		['4.0.0', 'webpack-4-0-0'],
-		['4.44.2', 'webpack-4-44-2']
-	]) {
+	for (const [version, name] of webpackVersions()) {
 		describe(`webpack: ${version}`, () => {
-			testFixtures(version, require(wp));
+			testFixtures(version, require(name));
 		});
 	}
 });
