@@ -37,7 +37,7 @@
 		"webpack": "^4.0.0"
 	},
 	"dependencies": {
-		"data-urls": "^2.0.0",
+		"data-urls": "^1.1.0",
 		"loader-utils": "^2.0.0"
 	},
 	"devDependencies": {
