@@ -18,6 +18,7 @@ jobs:
           - runs-on: ubuntu-20.04
             node-version: '8.17.0' # LTS
             NO_LINT: 1
+            PATCH_IMPORT: 1
           - runs-on: ubuntu-20.04
             node-version: '10.23.0' # LTS
             NO_LINT: 1
@@ -44,6 +45,11 @@ jobs:
       if: matrix.config.NPM == 6
     - run: npm --version
     - run: npm install
+
+    # Super ugly hack for backwards compat.
+    - run: node -e 'f="node_modules/jasmine/lib/loader.js";fs.writeFileSync(f,fs.readFileSync(f,"utf8").replace("return import(path)",`throw new Error("Patched out")`))'
+      if: matrix.config.PATCH_IMPORT == 1
+
     - run: npm run clean
     - run: npm run lint
       if: matrix.config.NO_LINT != 1
