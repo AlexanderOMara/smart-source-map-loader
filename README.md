@@ -9,7 +9,7 @@ A Smart Source Map Loader for Webpack
 [![size](https://packagephobia.now.sh/badge?p=smart-source-map-loader)](https://packagephobia.now.sh/result?p=smart-source-map-loader)
 [![downloads](https://img.shields.io/npm/dm/smart-source-map-loader.svg)](https://npmcharts.com/compare/smart-source-map-loader?minimal=true)
 
-[![travis-ci](https://travis-ci.org/AlexanderOMara/smart-source-map-loader.svg?branch=master)](https://travis-ci.org/AlexanderOMara/smart-source-map-loader)
+[![Build Status](https://github.com/AlexanderOMara/smart-source-map-loader/workflows/main/badge.svg?branch=master)](https://github.com/AlexanderOMara/smart-source-map-loader/actions?query=workflow%3Amain+branch%3Amaster)
 
 
 # Overview
