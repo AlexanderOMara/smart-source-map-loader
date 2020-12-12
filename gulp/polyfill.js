@@ -10,6 +10,9 @@ require('@babel/register')({
 });
 
 const util = require('util');
+const stream = require('stream');
+
+const pump = require('pump');
 
 // Add a mostly compatible util.promisify implementation if missing.
 if (!util.promisify) {
@@ -27,6 +30,11 @@ if (!util.promisify) {
 			});
 		};
 	};
+}
+
+// Add a mostly compatible stream.pipeline implementation if missing.
+if (!stream.pipeline) {
+	stream.pipeline = pump;
 }
 
 // Polyfill Promise finally method if missing.
