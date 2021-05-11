@@ -42,23 +42,25 @@ async function pipeline(...args) {
 	return r;
 }
 
-async function exec(cmd, args = []) {
-	await execa(cmd, args, {
-		preferLocal: true,
-		stdio: 'inherit'
-	});
+function command(cmd, args = []) {
+	return async (throws = true) => {
+		const p = execa(cmd, args, {
+			preferLocal: true,
+			stdio: 'inherit'
+		});
+		await (throws ? p : p.catch(_ => null));
+	};
 }
 
 async function packageJSON() {
-	packageJSON.json = packageJSON.json || readFile('package.json', 'utf8');
-	return JSON.parse(await packageJSON.json);
+	return JSON.parse(await readFile('package.json', 'utf8'));
 }
 
 async function babelrc() {
-	babelrc.json = babelrc.json || readFile('.babelrc', 'utf8');
-	return Object.assign(JSON.parse(await babelrc.json), {
+	return {
+		...JSON.parse(await readFile('.babelrc', 'utf8')),
 		babelrc: false
-	});
+	};
 }
 
 async function babelTarget(src, srcOpts, dest, modules) {
@@ -109,16 +111,8 @@ async function babelTarget(src, srcOpts, dest, modules) {
 	].filter(Boolean));
 }
 
-async function eslint(strict) {
-	try {
-		await exec('eslint', ['--ext', 'js,mjs,jsx,mjsx,ts,tsx', '.']);
-	}
-	catch (err) {
-		if (strict) {
-			throw err;
-		}
-	}
-}
+const eslint = command('eslint', ['.']);
+const jasmine = command('jasmine');
 
 // clean
 
@@ -141,20 +135,10 @@ gulp.task('clean', gulp.parallel([
 	'clean:lib'
 ]));
 
-// lint (watch)
-
-gulp.task('lintw:es', async () => {
-	await eslint(false);
-});
-
-gulp.task('lintw', gulp.parallel([
-	'lintw:es'
-]));
-
 // lint
 
 gulp.task('lint:es', async () => {
-	await eslint(true);
+	await eslint();
 });
 
 gulp.task('lint', gulp.parallel([
@@ -178,7 +162,7 @@ gulp.task('build', gulp.parallel([
 // test
 
 gulp.task('test:node', async () => {
-	await exec('jasmine');
+	await jasmine();
 });
 
 gulp.task('test', gulp.parallel([
@@ -199,16 +183,9 @@ gulp.task('watch', () => {
 
 gulp.task('all', gulp.series([
 	'clean',
-	'lint',
 	'build',
-	'test'
-]));
-
-// watched
-
-gulp.task('watched', gulp.series([
-	'all',
-	'watch'
+	'test',
+	'lint'
 ]));
 
 // prepack
