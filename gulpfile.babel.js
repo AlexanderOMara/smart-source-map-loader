@@ -42,14 +42,11 @@ async function pipeline(...args) {
 	return r;
 }
 
-function command(cmd, args = []) {
-	return async (throws = true) => {
-		const p = execa(cmd, args, {
-			preferLocal: true,
-			stdio: 'inherit'
-		});
-		await (throws ? p : p.catch(_ => null));
-	};
+function exec(cmd, args = []) {
+	await execa(cmd, args, {
+		preferLocal: true,
+		stdio: 'inherit'
+	});
 }
 
 async function packageJSON() {
@@ -111,9 +108,6 @@ async function babelTarget(src, srcOpts, dest, modules) {
 	].filter(Boolean));
 }
 
-const eslint = command('eslint', ['.']);
-const jasmine = command('jasmine');
-
 // clean
 
 gulp.task('clean:logs', async () => {
@@ -138,7 +132,7 @@ gulp.task('clean', gulp.parallel([
 // lint
 
 gulp.task('lint:es', async () => {
-	await eslint();
+	await exec('eslint', ['.']);
 });
 
 gulp.task('lint', gulp.parallel([
@@ -162,7 +156,7 @@ gulp.task('build', gulp.parallel([
 // test
 
 gulp.task('test:node', async () => {
-	await jasmine();
+	await exec('jasmine');
 });
 
 gulp.task('test', gulp.parallel([
