@@ -185,6 +185,16 @@ gulp.task('test', gulp.parallel([
 	'test:node'
 ]));
 
+// watch
+
+gulp.task('watch', () => {
+	gulp.watch([
+		'src/**/*'
+	], gulp.series([
+		'all'
+	]));
+});
+
 // all
 
 gulp.task('all', gulp.series([
@@ -197,10 +207,8 @@ gulp.task('all', gulp.series([
 // watched
 
 gulp.task('watched', gulp.series([
-	'clean',
-	'lintw',
-	'build',
-	'test'
+	'all',
+	'watch'
 ]));
 
 // prepack

@@ -30,7 +30,8 @@
 		"build": "gulp build",
 		"test": "gulp test",
 		"all": "gulp all",
-		"watch": "nodemon --exec 'gulp watched'",
+		"watch": "gulp watch",
+		"watched": "gulp watched",
 		"prepack": "gulp prepack"
 	},
 	"peerDependencies": {
@@ -61,7 +62,6 @@
 		"jasmine-spec-reporter": "^7.0.0",
 		"memory-fs": "^0.5.0",
 		"node-require-function": "^1.2.0",
-		"nodemon": "^2.0.7",
 		"promise.prototype.finally": "^3.1.2",
 		"pump": "^3.0.0",
 		"rimraf": "^3.0.2",
