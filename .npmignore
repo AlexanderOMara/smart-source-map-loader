@@ -29,7 +29,6 @@ yarn.lock
 /.tern-project
 /gulpfile.babel.js
 /gulp
-/nodemon.json
 /spec
 /src
 
