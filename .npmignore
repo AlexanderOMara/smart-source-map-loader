@@ -26,7 +26,6 @@ yarn.lock
 /.editorconfig
 /.eslintignore
 /.eslintrc.yaml
-/.tern-project
 /gulpfile.babel.js
 /gulp
 /spec
