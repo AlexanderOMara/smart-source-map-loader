@@ -42,7 +42,7 @@ async function pipeline(...args) {
 	return r;
 }
 
-function exec(cmd, args = []) {
+async function exec(cmd, args = []) {
 	await execa(cmd, args, {
 		preferLocal: true,
 		stdio: 'inherit'
