@@ -1,6 +1,4 @@
-import {
-	decodeURISafe
-} from './util';
+import {decodeURISafe} from './util';
 
 const rDirective = '([@#][ \\t]+sourceMappingURL=([^\r\n]*[^\\s]+))';
 const rCommentLine = `(\\/\\/${rDirective}[ \\t]*)`;

@@ -14,17 +14,21 @@ const stream = require('stream');
 
 // Add a mostly compatible util.promisify implementation if missing.
 if (!util.promisify) {
-	util.promisify = function(func) {
-		return function() {
+	util.promisify = function (func) {
+		return function () {
 			return new Promise((resolve, reject) => {
 				// eslint-disable-next-line no-invalid-this, prefer-rest-params
-				func.apply(this, [...arguments, (err, data) => {
-					if (err) {
-						reject(err);
-						return;
+				func.apply(this, [
+					// eslint-disable-next-line prefer-rest-params
+					...arguments,
+					(err, data) => {
+						if (err) {
+							reject(err);
+							return;
+						}
+						resolve(data);
 					}
-					resolve(data);
-				}]);
+				]);
 			});
 		};
 	};

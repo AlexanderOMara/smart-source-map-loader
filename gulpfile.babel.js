@@ -79,55 +79,48 @@ async function babelTarget(src, dest, modules) {
 		["'@NAME@'", JSON.stringify(pkg.name)]
 	].map(v => gulpReplace(...v));
 
-	await pipeline(...[
-		gulp.src(src),
-		filterMeta,
-		...filterMetaReplaces,
-		filterMeta.restore,
-		gulpSourcemaps.init(),
-		gulpBabel(babelOptions),
-		gulpRename(path => {
-			if (!modules && path.extname === '.js') {
-				path.extname = '.mjs';
-			}
-		}),
-		gulpSourcemaps.write('.', {
-			includeContent: true,
-			addComment: false,
-			destPath: dest
-		}),
-		gulpInsert.transform((contents, file) => {
-			// Manually append sourcemap comment.
-			if (/\.m?js$/i.test(file.path)) {
-				const base = path.basename(file.path);
-				return `${contents}\n//# sourceMappingURL=${base}.map\n`;
-			}
-			return contents;
-		}),
-		gulp.dest(dest)
-	].filter(Boolean));
+	await pipeline(
+		...[
+			gulp.src(src),
+			filterMeta,
+			...filterMetaReplaces,
+			filterMeta.restore,
+			gulpSourcemaps.init(),
+			gulpBabel(babelOptions),
+			gulpRename(path => {
+				if (!modules && path.extname === '.js') {
+					path.extname = '.mjs';
+				}
+			}),
+			gulpSourcemaps.write('.', {
+				includeContent: true,
+				addComment: false,
+				destPath: dest
+			}),
+			gulpInsert.transform((contents, file) => {
+				// Manually append sourcemap comment.
+				if (/\.m?js$/i.test(file.path)) {
+					const base = path.basename(file.path);
+					return `${contents}\n//# sourceMappingURL=${base}.map\n`;
+				}
+				return contents;
+			}),
+			gulp.dest(dest)
+		].filter(Boolean)
+	);
 }
 
 // clean
 
 gulp.task('clean:logs', async () => {
-	await del([
-		'npm-debug.log*',
-		'yarn-debug.log*',
-		'yarn-error.log*'
-	]);
+	await del(['npm-debug.log*', 'yarn-debug.log*', 'yarn-error.log*']);
 });
 
 gulp.task('clean:lib', async () => {
-	await del([
-		'lib'
-	]);
+	await del(['lib']);
 });
 
-gulp.task('clean', gulp.parallel([
-	'clean:logs',
-	'clean:lib'
-]));
+gulp.task('clean', gulp.parallel(['clean:logs', 'clean:lib']));
 
 // lint
 
@@ -135,62 +128,46 @@ gulp.task('lint:es', async () => {
 	await exec('eslint', ['.']);
 });
 
-gulp.task('lint', gulp.parallel([
-	'lint:es'
-]));
+gulp.task('lint', gulp.parallel(['lint:es']));
+
+// formatting
+
+gulp.task('format', async () => {
+	await exec('prettier', ['-w', '.']);
+});
+
+gulp.task('formatted', async () => {
+	await exec('prettier', ['-c', '.']);
+});
 
 // build
 
-gulp.task('build:lib:cjs', async () => {
+gulp.task('build:cjs', async () => {
 	await babelTarget(['src/**/*.mjs'], 'lib', 'commonjs');
 });
 
-gulp.task('build:lib', gulp.parallel([
-	'build:lib:cjs'
-]));
-
-gulp.task('build', gulp.parallel([
-	'build:lib'
-]));
+gulp.task('build', gulp.parallel(['build:cjs']));
 
 // test
 
-gulp.task('test:node', async () => {
+gulp.task('test', async () => {
 	await exec('jasmine');
 });
-
-gulp.task('test', gulp.parallel([
-	'test:node'
-]));
 
 // watch
 
 gulp.task('watch', () => {
-	gulp.watch([
-		'src/**/*'
-	], gulp.series([
-		'all'
-	]));
+	gulp.watch(['src/**/*'], gulp.series(['all']));
 });
 
 // all
 
-gulp.task('all', gulp.series([
-	'clean',
-	'build',
-	'test',
-	'lint'
-]));
+gulp.task('all', gulp.series(['clean', 'build', 'test', 'formatted', 'lint']));
 
 // prepack
 
-gulp.task('prepack', gulp.series([
-	'clean',
-	'build'
-]));
+gulp.task('prepack', gulp.series(['clean', 'build']));
 
 // default
 
-gulp.task('default', gulp.series([
-	'all'
-]));
+gulp.task('default', gulp.series(['all']));

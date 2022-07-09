@@ -1,9 +1,6 @@
 /* eslint-env jasmine */
 
-import {
-	NAME,
-	VERSION
-} from './meta';
+import {NAME, VERSION} from './meta';
 
 describe('meta', () => {
 	it('NAME', () => {

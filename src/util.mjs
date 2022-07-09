@@ -132,8 +132,7 @@ export function stringAbbrev(str, max, suffix = '') {
 export function decodeURISafe(str) {
 	try {
 		return decodeURI(str);
-	}
-	catch (err) {
+	} catch (err) {
 		// Do nothing.
 	}
 	return null;

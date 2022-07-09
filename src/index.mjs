@@ -15,9 +15,7 @@ import {
 	stringOrBufferCast,
 	readFileAsync
 } from './util';
-import {
-	data
-} from './uri';
+import {data} from './uri';
 import {Exception} from './exception';
 import {
 	parse as commentParse,
@@ -32,7 +30,7 @@ import {
  */
 function createResolver(resolve) {
 	const res = resolve;
-	return async function(context, request) {
+	return async function (context, request) {
 		const r = await new Promise((resolve, reject) => {
 			res(context, request, (err, result) => {
 				if (err) {
@@ -53,13 +51,12 @@ function createResolver(resolve) {
  * @returns {Function} Resolve function.
  */
 function createResolverMulti(resolver) {
-	return async function(context, requests) {
+	return async function (context, requests) {
 		for (const request of requests) {
 			try {
 				// eslint-disable-next-line no-await-in-loop
 				return await resolver(context, request);
-			}
-			catch (err) {
+			} catch (err) {
 				// Do nothing.
 			}
 		}
@@ -67,8 +64,8 @@ function createResolverMulti(resolver) {
 	};
 }
 
-// eslint-disable-next-line import/no-default-export, jsdoc/require-jsdoc
-export default async function(source, map, meta) {
+// eslint-disable-next-line import/no-default-export, jsdoc/require-jsdoc, no-unused-vars
+export default async function (source, map, meta) {
 	// eslint-disable-next-line no-invalid-this
 	const self = this;
 
@@ -91,11 +88,8 @@ export default async function(source, map, meta) {
 	let sourceString = null;
 	try {
 		sourceString = stringOrBufferCast(source, 'utf8');
-	}
-	catch (err) {
-		emitWarning(
-			new Exception(`Failed to cast source to string: ${err}`)
-		);
+	} catch (err) {
+		emitWarning(new Exception(`Failed to cast source to string: ${err}`));
 		// eslint-disable-next-line prefer-rest-params
 		callback(null, ...arguments);
 		return;
@@ -126,9 +120,7 @@ export default async function(source, map, meta) {
 		// Attempt to parse URL as a data URI.
 		const dataURI = data(parsed.url);
 		if (!dataURI) {
-			emitWarning(
-				new Exception(`Failed to parse data URI: ${mapInfo}`)
-			);
+			emitWarning(new Exception(`Failed to parse data URI: ${mapInfo}`));
 			callback(null, parsed.body);
 			return;
 		}
@@ -136,8 +128,7 @@ export default async function(source, map, meta) {
 		// Attempt to decode source map content.
 		try {
 			mapCode = dataURI.body().toString(dataURI.charset);
-		}
-		catch (err) {
+		} catch (err) {
 			emitWarning(
 				new Exception(`Failed to decode data URI: ${mapInfo}: ${err}`)
 			);
@@ -147,8 +138,7 @@ export default async function(source, map, meta) {
 
 		// Remember which file the source map came from.
 		mapFile = resourcePath;
-	}
-	else {
+	} else {
 		mapInfo = parsed.url;
 
 		// Remove file protocol from the URL if present.
@@ -179,8 +169,7 @@ export default async function(source, map, meta) {
 		// Read the file or emit warning and skip.
 		try {
 			mapCode = await readFileAsync(resolved, 'utf-8');
-		}
-		catch (err) {
+		} catch (err) {
 			emitWarning(
 				new Exception(`Failed to read source map: ${mapInfo}: ${err}`)
 			);
@@ -199,8 +188,7 @@ export default async function(source, map, meta) {
 	let mapData = null;
 	try {
 		mapData = JSON.parse(mapCode);
-	}
-	catch (err) {
+	} catch (err) {
 		emitWarning(
 			new Exception(`Failed to parse source map: ${mapInfo}: ${err}`)
 		);
@@ -215,11 +203,11 @@ export default async function(source, map, meta) {
 		if (!sources) {
 			continue;
 		}
-		const sourceRoot = (mapping.sourceRoot || '.');
+		const sourceRoot = mapping.sourceRoot || '.';
 
 		// Get list of sources or create empty list.
-		const sourcesContent = mapping.sourcesContent =
-			(mapping.sourcesContent || []);
+		const sourcesContent = (mapping.sourcesContent =
+			mapping.sourcesContent || []);
 
 		// Loop over the sources looking for missing content.
 		for (let i = 0; i < sources.length; i++) {
@@ -240,8 +228,7 @@ export default async function(source, map, meta) {
 			try {
 				// eslint-disable-next-line no-await-in-loop
 				resolved = await resolver(mapFileContext, sourceRequest);
-			}
-			catch (err) {
+			} catch (err) {
 				const info = `${mapInfo} -> ${sourceRequest}`;
 				emitWarning(
 					new Exception(
@@ -260,13 +247,10 @@ export default async function(source, map, meta) {
 			try {
 				// eslint-disable-next-line no-await-in-loop
 				sourceCode = await readFileAsync(resolved, 'utf-8');
-			}
-			catch (err) {
+			} catch (err) {
 				const info = `${mapInfo} -> ${sourceRequest}`;
 				emitWarning(
-					new Exception(
-						`Failed to read source file: ${info}: ${err}`
-					)
+					new Exception(`Failed to read source file: ${info}: ${err}`)
 				);
 				callback(null, parsed.body);
 				return;

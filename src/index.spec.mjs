@@ -9,7 +9,7 @@ import {Exception} from './exception';
 
 const require = nodeRequireFunction();
 
-const exceptionMessagePrefix = (new Exception('')).message;
+const exceptionMessagePrefix = new Exception('').message;
 
 const nodeVersion = process.versions.node.split('.').map(Number);
 
@@ -62,27 +62,31 @@ async function webpackAsync(webpack, options, properties) {
 async function webpackMemory(webpack, info) {
 	const fnCode = 'test.js';
 	const fnMap = `${fnCode}.map`;
-	const {compiler, stats} = await webpackAsync(webpack, {
-		entry: info.entry,
-		mode: 'development',
-		devtool: 'source-map',
-		output: {
-			filename: fnCode,
-			path: '/'
-		},
-		module: {
-			rules: [
-				{
-					test: /\.js$/,
-					use: {
-						loader: path.resolve('.')
+	const {compiler, stats} = await webpackAsync(
+		webpack,
+		{
+			entry: info.entry,
+			mode: 'development',
+			devtool: 'source-map',
+			output: {
+				filename: fnCode,
+				path: '/'
+			},
+			module: {
+				rules: [
+					{
+						test: /\.js$/,
+						use: {
+							loader: path.resolve('.')
+						}
 					}
-				}
-			]
+				]
+			}
+		},
+		{
+			outputFileSystem: new MemoryFs()
 		}
-	}, {
-		outputFileSystem: new MemoryFs()
-	});
+	);
 	const fsData = compiler.outputFileSystem.data;
 	const code = fsData[fnCode].toString('utf8');
 	const map = fsData[fnMap].toString('utf8');
@@ -126,9 +130,10 @@ function listSources(map, skipWebpack = true, sorted = true) {
 }
 
 function testFixtures(version, webpack) {
-	const urlPrefix = +version.split('.')[0] < 5 ?
-		'webpack:///' :
-		'webpack://smart-source-map-loader/';
+	const urlPrefix =
+		+version.split('.')[0] < 5
+			? 'webpack:///'
+			: 'webpack://smart-source-map-loader/';
 
 	describe('fixtures', () => {
 		it('content', async () => {
@@ -345,8 +350,7 @@ function testFixtures(version, webpack) {
 					`${urlPrefix}spec/fixtures/sources-relative/./one.js`,
 					`${urlPrefix}spec/fixtures/sources-relative/./two.js`
 				]);
-			}
-			else {
+			} else {
 				expect(sources.names).toEqual([
 					`${urlPrefix}spec/fixtures/sources-relative/one.js`,
 					`${urlPrefix}spec/fixtures/sources-relative/two.js`

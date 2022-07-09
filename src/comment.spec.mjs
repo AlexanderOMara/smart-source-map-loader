@@ -1,9 +1,6 @@
 /* eslint-env jasmine */
 
-import {
-	parse,
-	pathsFromURL
-} from './comment';
+import {parse, pathsFromURL} from './comment';
 
 const code = '(function(){})()';
 const urlFile = 'file.js.map';
@@ -14,7 +11,7 @@ const urlBase64 = 'data:application/source-map;charset=utf-8;base64,e30%3D';
 const urlFileSpace = 'file spaced.js.map';
 
 function stringRepeat(str, rep) {
-	return (new Array(rep + 1)).join(str);
+	return new Array(rep + 1).join(str);
 }
 
 function createSample(nl, d, url, block, spaces, lines) {
@@ -61,23 +58,19 @@ describe('comment', () => {
 				});
 
 				it('line comment spaces', () => {
-					testSample(nl, '#', urlFile, false, 2, 0
-					);
+					testSample(nl, '#', urlFile, false, 2, 0);
 				});
 
 				it('line comment newline', () => {
-					testSample(nl, '#', urlFile, false, 0, 1
-					);
+					testSample(nl, '#', urlFile, false, 0, 1);
 				});
 
 				it('line comment newlines', () => {
-					testSample(nl, '#', urlFile, false, 0, 2
-					);
+					testSample(nl, '#', urlFile, false, 0, 2);
 				});
 
 				it('line comment base64', () => {
-					testSample(nl, '#', urlBase64, false, 0, 0
-					);
+					testSample(nl, '#', urlBase64, false, 0, 0);
 				});
 
 				it('line comment obsolete', () => {
@@ -121,52 +114,52 @@ describe('comment', () => {
 				});
 
 				it('ignore comment in body', () => {
-					const parsed = parse([
-						'(function() {',
-						'//#sourceMappingURL=file.js.map',
-						'})()'
-					].join(nl));
+					const parsed = parse(
+						[
+							'(function() {',
+							'//#sourceMappingURL=file.js.map',
+							'})()'
+						].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 
 				it('ignore comment before code', () => {
-					const parsed = parse([
-						'(function() {})()',
-						'//#sourceMappingURL=file.js.map',
-						';'
-					].join(nl));
+					const parsed = parse(
+						[
+							'(function() {})()',
+							'//#sourceMappingURL=file.js.map',
+							';'
+						].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 
 				it('ignore comment not last line+line', () => {
-					const parsed = parse([
-						'//#sourceMappingURL=file.js.map',
-						'//'
-					].join(nl));
+					const parsed = parse(
+						['//#sourceMappingURL=file.js.map', '//'].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 
 				it('ignore comment not last line+block', () => {
-					const parsed = parse([
-						'//#sourceMappingURL=file.js.map',
-						'/**/'
-					].join(nl));
+					const parsed = parse(
+						['//#sourceMappingURL=file.js.map', '/**/'].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 
 				it('ignore comment not last block+block', () => {
-					const parsed = parse([
-						'/*#sourceMappingURL=file.js.map*/',
-						'/**/'
-					].join(nl));
+					const parsed = parse(
+						['/*#sourceMappingURL=file.js.map*/', '/**/'].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 
 				it('ignore comment not last block+line', () => {
-					const parsed = parse([
-						'/*#sourceMappingURL=file.js.map*/',
-						'//'
-					].join(nl));
+					const parsed = parse(
+						['/*#sourceMappingURL=file.js.map*/', '//'].join(nl)
+					);
 					expect(parsed).toBe(null);
 				});
 			});

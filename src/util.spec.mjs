@@ -24,12 +24,8 @@ const mapSingle = JSON.stringify({
 	names: ['bar', 'baz', 'n'],
 	sources: ['one.js', 'two.js'],
 	sourcesContent: [
-		' ONE.foo = function (bar) {\n' +
-		'   return baz(bar);\n' +
-		' };',
-		' TWO.inc = function (n) {\n' +
-		'   return n + 1;\n' +
-		' };'
+		' ONE.foo = function (bar) {\n   return baz(bar);\n };',
+		' TWO.inc = function (n) {\n   return n + 1;\n };'
 	],
 	sourceRoot: '',
 	mappings:
@@ -50,8 +46,8 @@ const mapIndexed = JSON.stringify({
 				sources: ['one.js'],
 				sourcesContent: [
 					' ONE.foo = function (bar) {\n' +
-					'   return baz(bar);\n' +
-					' };'
+						'   return baz(bar);\n' +
+						' };'
 				],
 				names: ['bar', 'baz'],
 				mappings: 'CAAC,IAAI,IAAM,SAAUA,GAClB,OAAOC,IAAID',
@@ -68,9 +64,7 @@ const mapIndexed = JSON.stringify({
 				version: 3,
 				sources: ['two.js'],
 				sourcesContent: [
-					' TWO.inc = function (n) {\n' +
-					'   return n + 1;\n' +
-					' };'
+					' TWO.inc = function (n) {\n   return n + 1;\n };'
 				],
 				names: ['n'],
 				mappings: 'CAAC,IAAI,IAAM,SAAUA,GAClB,OAAOA',
@@ -122,8 +116,9 @@ describe('util', () => {
 			expect(isDataURI('data:')).toBe(true);
 			expect(isDataURI('DaTa:')).toBe(true);
 			expect(isDataURI('DATA:')).toBe(true);
-			expect(isDataURI('data:test/plain;charset=utf-8;base64,'))
-				.toBe(true);
+			expect(isDataURI('data:test/plain;charset=utf-8;base64,')).toBe(
+				true
+			);
 		});
 
 		it('false', () => {
@@ -164,8 +159,9 @@ describe('util', () => {
 
 		it('absolute', () => {
 			expect(resolveURL('/aaa/file', '/bbb')).toBe('/bbb');
-			expect(resolveURL('/a/b', 'http://example.com/'))
-				.toBe('http://example.com');
+			expect(resolveURL('/a/b', 'http://example.com/')).toBe(
+				'http://example.com'
+			);
 		});
 	});
 
@@ -181,8 +177,9 @@ describe('util', () => {
 
 		it('absolute', () => {
 			expect(rebaseURL('/aaa/file', '/bbb')).toBe('/bbb');
-			expect(rebaseURL('/a/b', 'http://example.com/'))
-				.toBe('http://example.com/');
+			expect(rebaseURL('/a/b', 'http://example.com/')).toBe(
+				'http://example.com/'
+			);
 		});
 
 		it('data URI', () => {
@@ -245,35 +242,39 @@ describe('util', () => {
 
 	describe('pathRelativeIfSub', () => {
 		it('relative', () => {
-			expect(pathRelativeIfSub(
-				path.join('path', 'aaa', 'bbb'),
-				path.join('path', 'aaa', 'bbb', 'ccc')
-			))
-				.toBe('ccc');
+			expect(
+				pathRelativeIfSub(
+					path.join('path', 'aaa', 'bbb'),
+					path.join('path', 'aaa', 'bbb', 'ccc')
+				)
+			).toBe('ccc');
 		});
 
 		it('parent', () => {
-			expect(pathRelativeIfSub(
-				path.join('path', 'aaa', 'bbb', 'ccc'),
-				path.join('path', 'aaa', 'bbb')
-			))
-				.toBe(path.join('path', 'aaa', 'bbb'));
+			expect(
+				pathRelativeIfSub(
+					path.join('path', 'aaa', 'bbb', 'ccc'),
+					path.join('path', 'aaa', 'bbb')
+				)
+			).toBe(path.join('path', 'aaa', 'bbb'));
 		});
 
 		it('sibling', () => {
-			expect(pathRelativeIfSub(
-				path.join('path', 'dira'),
-				path.join('path', 'dirb')
-			))
-				.toBe(path.join('path', 'dirb'));
+			expect(
+				pathRelativeIfSub(
+					path.join('path', 'dira'),
+					path.join('path', 'dirb')
+				)
+			).toBe(path.join('path', 'dirb'));
 		});
 
 		it('root', () => {
-			expect(pathRelativeIfSub(
-				path.join('path', 'dira'),
-				path.join('path', 'dirb')
-			))
-				.toBe(path.join('path', 'dirb'));
+			expect(
+				pathRelativeIfSub(
+					path.join('path', 'dira'),
+					path.join('path', 'dirb')
+				)
+			).toBe(path.join('path', 'dirb'));
 		});
 	});
 
@@ -326,8 +327,7 @@ describe('util', () => {
 			let error = null;
 			try {
 				await readFileAsync(path, 'utf8');
-			}
-			catch (err) {
+			} catch (err) {
 				error = err;
 			}
 
