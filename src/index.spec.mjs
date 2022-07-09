@@ -334,17 +334,24 @@ function testFixtures(version, webpack) {
 			expect(warnings).toEqual([]);
 		});
 
-		/*
 		it('sources-relative', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/sources-relative/min'
 			});
 			const mapData = JSON.parse(map);
 			const sources = listSources(mapData);
-			expect(sources.names).toEqual([
-				`${urlPrefix}spec/fixtures/sources-relative/one.js`,
-				`${urlPrefix}spec/fixtures/sources-relative/two.js`
-			]);
+			if (version === 'latest') {
+				expect(sources.names).toEqual([
+					`${urlPrefix}spec/fixtures/sources-relative/./one.js`,
+					`${urlPrefix}spec/fixtures/sources-relative/./two.js`
+				]);
+			}
+			else {
+				expect(sources.names).toEqual([
+					`${urlPrefix}spec/fixtures/sources-relative/one.js`,
+					`${urlPrefix}spec/fixtures/sources-relative/two.js`
+				]);
+			}
 			for (const pair of sources.pairs) {
 				expect(typeof pair.content).toBe('string');
 			}
@@ -352,7 +359,6 @@ function testFixtures(version, webpack) {
 			expect(errors).toEqual([]);
 			expect(warnings).toEqual([]);
 		});
-		*/
 
 		it('url-relative', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
