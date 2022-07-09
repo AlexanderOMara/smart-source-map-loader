@@ -120,7 +120,7 @@ export function stringAbbrev(str, max, suffix = '') {
 	if (str.length <= max) {
 		return str;
 	}
-	return str.substr(0, max - suffix.length) + suffix;
+	return str.substring(0, max - suffix.length) + suffix;
 }
 
 /**

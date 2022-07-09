@@ -25,7 +25,7 @@ export function parse(code) {
 	const comment = m[2];
 	const directive = m[4] || m[7];
 	const url = m[5] || m[8];
-	const body = code.substr(0, code.length - footer.length);
+	const body = code.substring(0, code.length - footer.length);
 
 	return {
 		body,

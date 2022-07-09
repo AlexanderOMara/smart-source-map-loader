@@ -27,7 +27,7 @@ export function data(uri) {
 	const [, mediaInfo, data] = m1;
 	const base64 = /;base64$/iu.test(mediaInfo);
 	const mediaType = base64
-		? mediaInfo.substr(0, mediaInfo.length - 5)
+		? mediaInfo.substring(0, mediaInfo.length - 5)
 		: mediaInfo;
 	const [mimeType] = mediaType.split(';', 1);
 	const m2 = mediaType.match(/;charset=([^;]*)(;|$)/iu);
