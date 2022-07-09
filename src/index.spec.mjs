@@ -16,7 +16,7 @@ const nodeVersion = process.versions.node.split('.').map(Number);
 function webpackVersions() {
 	const r = [
 		['4.0.0', 'webpack-4-0-0'],
-		['4.44.2', 'webpack-4-44-2']
+		['4.46.0', 'webpack-4-46-0']
 	];
 	if (
 		nodeVersion[0] > 10 ||
