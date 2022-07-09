@@ -49,7 +49,7 @@ async function exec(cmd, args = []) {
 	});
 }
 
-async function packageJSON() {
+async function packageJson() {
 	return JSON.parse(await readFile('package.json', 'utf8'));
 }
 
@@ -60,7 +60,7 @@ async function babelrc() {
 	};
 }
 
-async function babelTarget(src, srcOpts, dest, modules) {
+async function babelTarget(src, dest, modules) {
 	// Change module.
 	const babelOptions = await babelrc();
 	for (const preset of babelOptions.presets) {
@@ -70,7 +70,7 @@ async function babelTarget(src, srcOpts, dest, modules) {
 	}
 
 	// Read the package JSON.
-	const pkg = await packageJSON();
+	const pkg = await packageJson();
 
 	// Filter meta data file and create replace transform.
 	const filterMeta = gulpFilter(['*/meta.ts'], {restore: true});
@@ -80,7 +80,7 @@ async function babelTarget(src, srcOpts, dest, modules) {
 	].map(v => gulpReplace(...v));
 
 	await pipeline(...[
-		gulp.src(src, srcOpts),
+		gulp.src(src),
 		filterMeta,
 		...filterMetaReplaces,
 		filterMeta.restore,
@@ -142,7 +142,7 @@ gulp.task('lint', gulp.parallel([
 // build
 
 gulp.task('build:lib:cjs', async () => {
-	await babelTarget(['src/**/*.mjs'], {}, 'lib', 'commonjs');
+	await babelTarget(['src/**/*.mjs'], 'lib', 'commonjs');
 });
 
 gulp.task('build:lib', gulp.parallel([
