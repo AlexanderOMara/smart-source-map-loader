@@ -330,6 +330,7 @@ function testFixtures(version, webpack) {
 			expect(warnings).toEqual([]);
 		});
 
+		/*
 		it('sources-relative', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/sources-relative/min'
@@ -347,6 +348,7 @@ function testFixtures(version, webpack) {
 			expect(errors).toEqual([]);
 			expect(warnings).toEqual([]);
 		});
+		*/
 
 		it('url-relative', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
