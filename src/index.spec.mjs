@@ -14,18 +14,19 @@ const exceptionMessagePrefix = (new Exception('')).message;
 const nodeVersion = process.versions.node.split('.').map(Number);
 
 function webpackVersions() {
-	const r = [
-		['4.0.0', 'webpack-4-0-0'],
-		['4.46.0', 'webpack-4-46-0']
-	];
+	const r = [];
+	if (nodeVersion[0] < 17) {
+		r.push(['4.0.0', 'webpack-4-0-0']);
+		r.push(['4.46.0', 'webpack-4-46-0']);
+	}
 	if (
 		nodeVersion[0] > 10 ||
 		(nodeVersion[0] === 10 && nodeVersion[0] >= 13)
 	) {
-		r.push(
-			['5.0.0', 'webpack-5-0-0'],
-			['latest', 'webpack']
-		);
+		if (nodeVersion[0] < 17) {
+			r.push(['5.0.0', 'webpack-5-0-0']);
+		}
+		r.push(['latest', 'webpack']);
 	}
 	return r;
 }
