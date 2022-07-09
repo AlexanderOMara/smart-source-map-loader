@@ -149,8 +149,12 @@ function testFixtures(version, webpack) {
 			expect(warnings).toEqual([]);
 		});
 
-		/*
 		it('indexed', async () => {
+			// No longer supported by webpack?
+			if (version === 'latest') {
+				return;
+			}
+
 			const {stats, map} = await webpackMemory(webpack, {
 				entry: './spec/fixtures/indexed/min'
 			});
@@ -167,7 +171,6 @@ function testFixtures(version, webpack) {
 			expect(errors).toEqual([]);
 			expect(warnings).toEqual([]);
 		});
-		*/
 
 		it('external', async () => {
 			const {stats, map} = await webpackMemory(webpack, {
