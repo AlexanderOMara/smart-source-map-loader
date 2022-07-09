@@ -14,11 +14,10 @@ const exceptionMessagePrefix = (new Exception('')).message;
 const nodeVersion = process.versions.node.split('.').map(Number);
 
 function webpackVersions() {
-	const r = [];
-	if (nodeVersion[0] < 18) {
-		r.push(['4.0.0', 'webpack-4-0-0']);
-	}
-	r.push(['4.44.2', 'webpack-4-44-2']);
+	const r = [
+		['4.0.0', 'webpack-4-0-0'],
+		['4.44.2', 'webpack-4-44-2']
+	];
 	if (
 		nodeVersion[0] > 10 ||
 		(nodeVersion[0] === 10 && nodeVersion[0] >= 13)
