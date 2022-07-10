@@ -61,6 +61,8 @@ module.exports = {
 
 For performance reasons you may wish to exclude `node_modules` in your setup.
 
+If you do include them though they will have the correct path in the source map.
+
 # Bugs
 
 If you find a bug or have compatibility issues, please open a ticket under issues section for this repository.
