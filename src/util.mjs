@@ -2,7 +2,7 @@ import {resolve as urlResolve} from 'url';
 import {relative as pathRelative} from 'path';
 import {readFile} from 'fs';
 
-const rURL = /^(?:[\w+\-.]+:)?\/\//;
+const rProto = /^[a-z][a-z0-9-.]*:/i;
 const rDataURI = /^data:/i;
 
 /**
@@ -26,7 +26,7 @@ export function isAbsoluteURL(uri) {
 	if (uri[0] === '/') {
 		return true;
 	}
-	return rURL.test(uri);
+	return rProto.test(uri);
 }
 
 /**
