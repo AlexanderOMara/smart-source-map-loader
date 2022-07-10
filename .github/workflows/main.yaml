@@ -91,6 +91,8 @@ jobs:
   publish:
     needs: build
 
+    runs-on: ubuntu-20.04
+
     steps:
       - name: Testing
         run: ls -al
