@@ -64,16 +64,6 @@ export function pathResolve(path) {
 }
 
 /**
- * Join URL parts on seperator character.
- *
- * @param {Array} parts URL parts.
- * @returns {string} Joined path.
- */
-export function joinURL(...parts) {
-	return parts.join('/');
-}
-
-/**
  * Rebase a URL path with no trailing slash.
  *
  * @param {string} from From path.

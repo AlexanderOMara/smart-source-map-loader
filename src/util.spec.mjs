@@ -6,7 +6,6 @@ import {
 	nullUndefined,
 	isAbsoluteURL,
 	isDataURI,
-	joinURL,
 	pathResolve,
 	rebaseURL,
 	sourceMapMappings,
@@ -127,22 +126,6 @@ describe('util', () => {
 			expect(isDataURI('./data:')).toBe(false);
 			expect(isDataURI('/data:')).toBe(false);
 			expect(isDataURI('_data:')).toBe(false);
-		});
-	});
-
-	describe('joinURL', () => {
-		it('1', () => {
-			expect(joinURL('.')).toBe('.');
-		});
-
-		it('2', () => {
-			expect(joinURL('.', 'test')).toBe('./test');
-			expect(joinURL('aaa', 'bbb')).toBe('aaa/bbb');
-		});
-
-		it('3', () => {
-			expect(joinURL('.', 'aaa', 'bbb')).toBe('./aaa/bbb');
-			expect(joinURL('aaa', 'bbb', 'ccc')).toBe('aaa/bbb/ccc');
 		});
 	});
 

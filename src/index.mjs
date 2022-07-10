@@ -7,7 +7,6 @@ import loaderUtils from 'loader-utils';
 import {
 	nullUndefined,
 	isDataURI,
-	joinURL,
 	sourceMapMappings,
 	sourceMapRebase,
 	pathRelativeIfSub,
@@ -220,7 +219,7 @@ export default async function (source, map, meta) {
 			}
 
 			// Locate the source file.
-			const sourcePath = joinURL(sourceRoot, source);
+			const sourcePath = `${sourceRoot}/${source}`;
 			const sourceRequest = loaderUtils.urlToRequest(sourcePath);
 
 			// Resolve source file or emit warning and skip.
