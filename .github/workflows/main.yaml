@@ -89,6 +89,7 @@ jobs:
         if: matrix.config.NO_LINT != 1
 
   publish:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: build
 
     runs-on: ubuntu-20.04
