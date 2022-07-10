@@ -50,14 +50,14 @@ export function joinURL(...parts) {
 }
 
 /**
- * Resolve a URL path with no trailing slash.
+ * Resolve a URL path.
  *
  * @param {string} from From path.
  * @param {string} to To path.
  * @returns {string} Full path.
  */
 export function resolveURL(from, to) {
-	return urlResolve(from, to).replace(/\/$/, '');
+	return urlResolve(from, to);
 }
 
 /**

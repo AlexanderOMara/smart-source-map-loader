@@ -153,14 +153,14 @@ describe('util', () => {
 			expect(resolveURL('aaa/file', './bbb')).toBe('aaa/bbb');
 			expect(resolveURL('aaa/file', '../bbb')).toBe('bbb');
 			expect(resolveURL('aaa/file', '')).toBe('aaa/file');
-			expect(resolveURL('aaa/file', '.')).toBe('aaa');
-			expect(resolveURL('aaa/file', './')).toBe('aaa');
+			expect(resolveURL('aaa/file', '.')).toBe('aaa/');
+			expect(resolveURL('aaa/file', './')).toBe('aaa/');
 		});
 
 		it('absolute', () => {
 			expect(resolveURL('/aaa/file', '/bbb')).toBe('/bbb');
 			expect(resolveURL('/a/b', 'http://example.com/')).toBe(
-				'http://example.com'
+				'http://example.com/'
 			);
 		});
 	});
@@ -171,8 +171,8 @@ describe('util', () => {
 			expect(rebaseURL('aaa/file', './bbb')).toBe('aaa/bbb');
 			expect(rebaseURL('aaa/file', '../bbb')).toBe('bbb');
 			expect(rebaseURL('aaa/file', '')).toBe('aaa/file');
-			expect(rebaseURL('aaa/file', '.')).toBe('aaa');
-			expect(rebaseURL('aaa/file', './')).toBe('aaa');
+			expect(rebaseURL('aaa/file', '.')).toBe('aaa/');
+			expect(rebaseURL('aaa/file', './')).toBe('aaa/');
 		});
 
 		it('absolute', () => {
@@ -209,9 +209,9 @@ describe('util', () => {
 
 	describe('sourceMapRebase', () => {
 		for (const info of [
-			['', 'test/file.js.map', 'test'],
-			['.', 'test/file.js.map', 'test'],
-			['./', 'test/file.js.map', 'test'],
+			['', 'test/file.js.map', 'test/'],
+			['.', 'test/file.js.map', 'test/'],
+			['./', 'test/file.js.map', 'test/'],
 			['..', 'test/file.js.map', ''],
 			['../other', 'test/file.js.map', 'other'],
 			[null, '', '']
