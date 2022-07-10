@@ -53,7 +53,7 @@ export function pathResolve(path) {
 }
 
 /**
- * Rebase a URL path with no trailing slash.
+ * Rebase a URL path.
  *
  * @param {string} from From path.
  * @param {string} to To path.
