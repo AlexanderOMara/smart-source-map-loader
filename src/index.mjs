@@ -268,7 +268,7 @@ export default async function (source, map, meta) {
 
 	// Rebase the source map base to the source map file.
 	// This way webpack will have the real path to the source file.
-	sourceMapRebase(mapData, mapFilePath.replace(/\\/, '/'));
+	sourceMapRebase(mapData, mapFilePath.replace(/\\/g, '/'));
 
 	// All good, pass the body and parsed source map out.
 	callback(null, parsed.body, mapData);
