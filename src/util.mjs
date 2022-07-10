@@ -63,7 +63,7 @@ export function rebaseURL(from, to) {
 	if (isAbsoluteURL(to) || isDataURI(to)) {
 		return to;
 	}
-	const [, fb, fp] = from.match(rURL);
+	const [, fb, fp] = from.replace(/\\/g, '').match(rURL);
 	const [, , tp, te] = to.match(rURL);
 	const path = tp ? pathResolve(fp.replace(/[^/]+$/, '') + tp) : fp;
 	return fb + (fb && path[0] !== '/' ? '/' : '') + path + te;
