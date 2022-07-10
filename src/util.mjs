@@ -1,7 +1,7 @@
-import {resolve as urlResolve} from 'url';
 import {relative as pathRelative} from 'path';
 import {readFile} from 'fs';
 
+const rURL = /^([a-z][a-z0-9.-]*:\/?\/?[^/]*|\/\/[^/]*|)([^?#]*)(.*)$/i;
 const rProto = /^[a-z][a-z0-9-.]*:/i;
 const rDataURI = /^data:/i;
 
@@ -37,6 +37,33 @@ export function isDataURI(uri) {
 }
 
 /**
+ * Clean a URL path of extra dot notation.
+ *
+ * @param {string} path URL pathname.
+ * @returns Normalized pathname.
+ */
+export function pathResolve(path) {
+	let p = path;
+	// Multiple slashes to slash.
+	p = p.replace(/\/\/+/g, '/');
+	// Dot slash.
+	p = p.replace(/^(\.\/)+/, '');
+	// Trailing slash dot to slash.
+	p = p.replace(/\/\.$/, '/');
+	// Dot slash path components.
+	p = p.replace(/\/(\.\/)+/g, '/');
+	for (;;) {
+		// Leading, middle, and trailing, dot dot slash resolving.
+		const v = p.replace(/(^|\/)[^/]+(?<!\.\.)\/\.\.(\/|$)/g, '$1');
+		if (v === p) {
+			break;
+		}
+		p = v;
+	}
+	return p === '.' ? '' : p;
+}
+
+/**
  * Join URL parts on seperator character.
  *
  * @param {Array} parts URL parts.
@@ -44,17 +71,6 @@ export function isDataURI(uri) {
  */
 export function joinURL(...parts) {
 	return parts.join('/');
-}
-
-/**
- * Resolve a URL path.
- *
- * @param {string} from From path.
- * @param {string} to To path.
- * @returns {string} Full path.
- */
-export function resolveURL(from, to) {
-	return urlResolve(from, to);
 }
 
 /**
@@ -68,7 +84,10 @@ export function rebaseURL(from, to) {
 	if (isAbsoluteURL(to) || isDataURI(to)) {
 		return to;
 	}
-	return resolveURL(from, to);
+	const [, fb, fp] = from.match(rURL);
+	const [, , tp, te] = to.match(rURL);
+	const path = tp ? pathResolve(fp.replace(/[^/]+$/, '') + tp) : fp;
+	return fb + (fb && path[0] !== '/' ? '/' : '') + path + te;
 }
 
 /**

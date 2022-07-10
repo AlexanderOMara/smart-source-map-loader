@@ -7,7 +7,7 @@ import {
 	isAbsoluteURL,
 	isDataURI,
 	joinURL,
-	resolveURL,
+	pathResolve,
 	rebaseURL,
 	sourceMapMappings,
 	sourceMapRebase,
@@ -146,21 +146,27 @@ describe('util', () => {
 		});
 	});
 
-	describe('resolveURL', () => {
-		it('relative', () => {
-			expect(resolveURL('aaa/file', 'bbb')).toBe('aaa/bbb');
-			expect(resolveURL('aaa/file', './bbb')).toBe('aaa/bbb');
-			expect(resolveURL('aaa/file', '../bbb')).toBe('bbb');
-			expect(resolveURL('aaa/file', '')).toBe('aaa/file');
-			expect(resolveURL('aaa/file', '.')).toBe('aaa/');
-			expect(resolveURL('aaa/file', './')).toBe('aaa/');
+	describe('pathResolve', () => {
+		it('double slash', () => {
+			expect(pathResolve('/aa//bb/')).toBe('/aa/bb/');
 		});
 
-		it('absolute', () => {
-			expect(resolveURL('/aaa/file', '/bbb')).toBe('/bbb');
-			expect(resolveURL('/a/b', 'http://example.com/')).toBe(
-				'http://example.com/'
-			);
+		it('just dot', () => {
+			expect(pathResolve('.')).toBe('');
+		});
+
+		it('dot slash', () => {
+			expect(pathResolve('./aa')).toBe('aa');
+			expect(pathResolve('/aa/.')).toBe('/aa/');
+			expect(pathResolve('/aa/./bb/./cc/')).toBe('/aa/bb/cc/');
+			expect(pathResolve('/aa/././bb/././cc/')).toBe('/aa/bb/cc/');
+		});
+
+		it('dot dot slash', () => {
+			expect(pathResolve('/aa/..')).toBe('/');
+			expect(pathResolve('/aa/bb/..')).toBe('/aa/');
+			expect(pathResolve('/aa/bb/../')).toBe('/aa/');
+			expect(pathResolve('/aa/bb/../../aa/bb/../')).toBe('/aa/');
 		});
 	});
 
