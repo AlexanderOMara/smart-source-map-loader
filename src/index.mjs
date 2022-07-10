@@ -264,7 +264,6 @@ export default async function (source, map, meta) {
 	}
 
 	// Get the path to the source map, relative if possible.
-	global.console.log([rootContext, mapFile]);
 	const mapFilePath = pathRelativeIfSub(rootContext, mapFile);
 
 	// Rebase the source map base to the source map file.
