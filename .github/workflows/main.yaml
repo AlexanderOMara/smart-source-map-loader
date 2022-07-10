@@ -45,6 +45,9 @@ jobs:
             NO_LINT: 1
 
           - runs-on: ubuntu-20.04
+            node-version: '16.16.0' # LTS (current)
+
+          - runs-on: ubuntu-20.04
             node-version: '18.5.0'
 
           - runs-on: windows-2019
@@ -101,7 +104,7 @@ jobs:
       - name: Node
         uses: actions/setup-node@v3
         with:
-          node-version: '16.13.0'
+          node-version: '16.16.0'
           registry-url: https://registry.npmjs.org/
 
       - name: Dependencies
