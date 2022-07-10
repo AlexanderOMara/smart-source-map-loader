@@ -112,10 +112,9 @@ export function pathRelativeIfSub(from, to) {
  * @returns {string} Abbreviated or original string.
  */
 export function stringAbbrev(str, max, suffix = '') {
-	if (str.length <= max) {
-		return str;
-	}
-	return str.substring(0, max - suffix.length) + suffix;
+	return str.length > max
+		? str.substring(0, max - suffix.length) + suffix
+		: str;
 }
 
 /**
