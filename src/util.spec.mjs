@@ -107,7 +107,6 @@ describe('util', () => {
 			expect(isAbsoluteURL('./path')).toBe(false);
 			expect(isAbsoluteURL('path/slashes')).toBe(false);
 			expect(isAbsoluteURL('./path/slashes')).toBe(false);
-			expect(isAbsoluteURL('data:')).toBe(false);
 		});
 	});
 
