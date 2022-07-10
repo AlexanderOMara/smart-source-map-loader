@@ -6,17 +6,6 @@ const rProto = /^[a-z][a-z0-9-.]*:/i;
 const rDataURI = /^data:/i;
 
 /**
- * Check if value if null or undefined.
- *
- * @param {*} value Any value.
- * @returns {boolean} Is either.
- */
-export function nullUndefined(value) {
-	// eslint-disable-next-line no-undefined
-	return value === null || value === undefined;
-}
-
-/**
  * Check if absolute URL.
  *
  * @param {string} uri URL strng.

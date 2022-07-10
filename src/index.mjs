@@ -5,7 +5,6 @@ import {dirname as pathDirname} from 'path';
 import loaderUtils from 'loader-utils';
 
 import {
-	nullUndefined,
 	isDataURI,
 	sourceMapMappings,
 	sourceMapRebase,
@@ -214,7 +213,11 @@ export default async function (source, map, meta) {
 			const sourceContent = sourcesContent[i];
 
 			// If has content or source is a data URI, nothing to read.
-			if (!nullUndefined(sourceContent) || isDataURI(source)) {
+			if (
+				// eslint-disable-next-line no-undefined
+				(sourceContent !== null && sourceContent !== undefined) ||
+				isDataURI(source)
+			) {
 				continue;
 			}
 

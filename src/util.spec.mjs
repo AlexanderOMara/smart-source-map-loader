@@ -3,7 +3,6 @@
 import path from 'path';
 
 import {
-	nullUndefined,
 	isAbsoluteURL,
 	isDataURI,
 	pathResolve,
@@ -75,21 +74,6 @@ const mapIndexed = JSON.stringify({
 });
 
 describe('util', () => {
-	describe('nullUndefined', () => {
-		it('true', () => {
-			expect(nullUndefined(null)).toBe(true);
-			// eslint-disable-next-line no-undefined
-			expect(nullUndefined(undefined)).toBe(true);
-			expect(nullUndefined()).toBe(true);
-		});
-
-		it('false', () => {
-			expect(nullUndefined(false)).toBe(false);
-			expect(nullUndefined(true)).toBe(false);
-			expect(nullUndefined(NaN)).toBe(false);
-		});
-	});
-
 	describe('isAbsoluteURL', () => {
 		it('true', () => {
 			expect(isAbsoluteURL('/')).toBe(true);
