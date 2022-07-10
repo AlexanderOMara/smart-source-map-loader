@@ -1,4 +1,4 @@
-import {relative as pathRelative} from 'path';
+import {join as pathJoin} from 'path';
 import {readFile} from 'fs';
 
 const rURL = /^([a-z][a-z0-9.-]*:\/?\/?[^/]*|\/\/[^/]*|)([^?#]*)(.*)$/i;
@@ -100,7 +100,14 @@ export function sourceMapRebase(map, base) {
  * @returns {string} Resulting path.
  */
 export function pathRelativeIfSub(from, to) {
-	return to.indexOf(from) ? to : pathRelative(from, to);
+	if (from === to) {
+		return '';
+	}
+	if (!from) {
+		return to;
+	}
+	const pre = pathJoin(from, '_').replace(/_$/, '');
+	return to.substring(0, pre.length) === pre ? to.substring(pre.length) : to;
 }
 
 /**
