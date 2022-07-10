@@ -134,6 +134,7 @@ describe('util', () => {
 			expect(pathResolve('/aa/bb/..')).toBe('/aa/');
 			expect(pathResolve('/aa/bb/../')).toBe('/aa/');
 			expect(pathResolve('/aa/bb/../../aa/bb/../')).toBe('/aa/');
+			expect(pathResolve('../../../aa')).toBe('../../../aa');
 		});
 	});
 

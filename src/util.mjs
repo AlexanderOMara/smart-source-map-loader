@@ -43,7 +43,7 @@ export function pathResolve(path) {
 	p = p.replace(/\/(\.\/)+/g, '/');
 	for (;;) {
 		// Leading, middle, and trailing, dot dot slash resolving.
-		const v = p.replace(/(^|\/)(?!\.\.)([^/]+)\/\.\.(\/|$)/g, '$1');
+		const v = p.replace(/(^|\/)(?!\.\.)[^/]+\/\.\.(\/|$)/g, '$1');
 		if (v === p) {
 			break;
 		}
