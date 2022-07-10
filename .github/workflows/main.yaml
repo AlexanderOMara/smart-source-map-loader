@@ -90,6 +90,7 @@ jobs:
 
   publish:
     needs: build
+
+    steps:
       - name: Testing
         run: ls -al
-
