@@ -95,5 +95,21 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Testing
-        run: ls -al
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.13.0'
+
+      - name: Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
