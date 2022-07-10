@@ -60,6 +60,7 @@ export function pathResolve(path) {
  * @returns {string} Full path.
  */
 export function rebaseURL(from, to) {
+	global.console.log([from, to]);
 	if (isAbsoluteURL(to) || isDataURI(to)) {
 		return to;
 	}
