@@ -23,10 +23,7 @@ export function nullUndefined(value) {
  * @returns {boolean} Is absolute.
  */
 export function isAbsoluteURL(uri) {
-	if (uri[0] === '/') {
-		return true;
-	}
-	return rProto.test(uri);
+	return uri[0] === '/' || rProto.test(uri);
 }
 
 /**
