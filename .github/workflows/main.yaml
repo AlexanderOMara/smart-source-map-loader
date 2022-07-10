@@ -87,3 +87,9 @@ jobs:
       - name: Lint
         run: npm run lint
         if: matrix.config.NO_LINT != 1
+
+  publish:
+    needs: build
+      - name: Testing
+        run: ls -al
+
