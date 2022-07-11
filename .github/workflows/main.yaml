@@ -12,6 +12,7 @@ jobs:
             NO_FORMATTED: 1
             NO_LINT: 1
             NO_NPM_CI: 1
+            NO_NPM_LOCK: 1
             NPM: 6
 
           - runs-on: ubuntu-20.04
@@ -19,12 +20,14 @@ jobs:
             NO_FORMATTED: 1
             NO_LINT: 1
             NO_NPM_CI: 1
+            NO_NPM_LOCK: 1
 
           - runs-on: ubuntu-20.04
             node-version: '10.13.0' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
             NO_NPM_CI: 1
+            NO_NPM_LOCK: 1
 
           - runs-on: ubuntu-20.04
             node-version: '12.13.0' # LTS
@@ -70,6 +73,10 @@ jobs:
 
       - name: NPM Version
         run: npm --version
+
+      - name: No Lock File
+        run: rm package-lock.json
+        if: matrix.config.NO_NPM_LOCK == 1
 
       - name: Dependencies
         run: npm ci
