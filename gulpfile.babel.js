@@ -45,7 +45,8 @@ async function pipeline(...args) {
 async function exec(cmd, args = []) {
 	const code = await new Promise((resolve, reject) => {
 		const p = childProcess.spawn(cmd, args, {
-			stdio: 'inherit'
+			stdio: 'inherit',
+			shell: true
 		});
 		p.once('close', resolve);
 		p.once('error', reject);
@@ -157,7 +158,7 @@ gulp.task('build', gulp.parallel(['build:cjs']));
 // test
 
 gulp.task('test', async () => {
-	await exec('npx', ['jasmine']);
+	await exec('jasmine');
 });
 
 // watch
