@@ -13,7 +13,6 @@ import gulpFilter from 'gulp-filter';
 import gulpReplace from 'gulp-replace';
 import gulpSourcemaps from 'gulp-sourcemaps';
 import gulpBabel from 'gulp-babel';
-// import execa from 'execa';
 import del from 'del';
 import pump from 'pump';
 
@@ -44,10 +43,6 @@ async function pipeline(...args) {
 }
 
 async function exec(cmd, args = []) {
-	// await execa(cmd, args, {
-	// 	preferLocal: true,
-	// 	stdio: 'inherit'
-	// });
 	const code = await new Promise((resolve, reject) => {
 		const p = childProcess.spawn(cmd, args, {
 			stdio: 'inherit'
