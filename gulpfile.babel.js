@@ -4,6 +4,7 @@ import './gulp/polyfill';
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
+import childProcess from 'child_process';
 
 import gulp from 'gulp';
 import gulpRename from 'gulp-rename';
@@ -12,7 +13,7 @@ import gulpFilter from 'gulp-filter';
 import gulpReplace from 'gulp-replace';
 import gulpSourcemaps from 'gulp-sourcemaps';
 import gulpBabel from 'gulp-babel';
-import execa from 'execa';
+// import execa from 'execa';
 import del from 'del';
 import pump from 'pump';
 
@@ -43,10 +44,24 @@ async function pipeline(...args) {
 }
 
 async function exec(cmd, args = []) {
-	await execa(cmd, args, {
-		preferLocal: true,
-		stdio: 'inherit'
+	// await execa(cmd, args, {
+	// 	preferLocal: true,
+	// 	stdio: 'inherit'
+	// });
+	const code = await new Promise((resolve, reject) => {
+		const p = childProcess.spawn(cmd, args, {
+			stdio: 'inherit'
+		});
+		p.once('close', code => {
+			resolve(code);
+		});
+		p.once('error', err => {
+			reject(err);
+		});
 	});
+	if (code) {
+		throw new Error(`Exit code: ${code}`);
+	}
 }
 
 async function packageJson() {
