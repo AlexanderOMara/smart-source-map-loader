@@ -8,34 +8,28 @@ jobs:
       matrix:
         config:
           - runs-on: ubuntu-20.04
-            node-version: '6.14.4'
+            node-version: '6.11.5' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
             NPM: 6
 
           - runs-on: ubuntu-20.04
-            node-version: '6.17.1' # LTS
-            NO_FORMATTED: 1
-            NO_LINT: 1
-            NPM: 6
-
-          - runs-on: ubuntu-20.04
-            node-version: '8.17.0' # LTS
+            node-version: '8.9.0' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
 
           - runs-on: ubuntu-20.04
-            node-version: '10.24.1' # LTS
+            node-version: '10.13.0' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
 
           - runs-on: ubuntu-20.04
-            node-version: '12.22.1' # LTS
+            node-version: '12.13.0' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
 
           - runs-on: ubuntu-20.04
-            node-version: '14.16.1' # LTS
+            node-version: '14.15.0' # LTS
             NO_FORMATTED: 1
             NO_LINT: 1
 
