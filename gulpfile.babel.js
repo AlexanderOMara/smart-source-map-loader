@@ -162,7 +162,7 @@ gulp.task('watch', () => {
 
 // all
 
-gulp.task('all', gulp.series(['clean', 'build', 'test', 'formatted', 'lint']));
+gulp.task('all', gulp.series(['clean', 'build', 'test', 'lint', 'formatted']));
 
 // prepack
 
