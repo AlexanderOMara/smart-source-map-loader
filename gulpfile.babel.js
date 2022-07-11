@@ -161,7 +161,7 @@ gulp.task('build', gulp.parallel(['build:cjs']));
 // test
 
 gulp.task('test', async () => {
-	await exec('jasmine');
+	await exec('npx', ['jasmine']);
 });
 
 // watch
