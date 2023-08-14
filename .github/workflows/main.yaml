@@ -9,21 +9,12 @@ jobs:
         config:
           - runs-on: ubuntu-22.04
             node-version: '6.11.5' # LTS
-            NO_NPM_CI: 1
-            NO_NPM_LOCK: 1
-            NPM: 6
 
           - runs-on: ubuntu-22.04
             node-version: '8.9.0' # LTS
-            NO_NPM_CI: 1
-            NO_NPM_LOCK: 1
-            NPM: 6
 
           - runs-on: ubuntu-22.04
             node-version: '10.13.0' # LTS
-            NO_NPM_CI: 1
-            NO_NPM_LOCK: 1
-            NPM: 6
 
           - runs-on: ubuntu-22.04
             node-version: '12.13.0' # LTS
@@ -59,29 +50,30 @@ jobs:
       - name: Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.config.node-version }}
+          node-version: '18.17.1'
 
-      - name: NPM 6+
-        run: npm install -g npm@6.9.0
-        if: matrix.config.NPM == 6
+      - name: Node Version
+        run: node --version
 
       - name: NPM Version
         run: npm --version
 
-      - name: No Lock File
-        run: rm package-lock.json
-        if: matrix.config.NO_NPM_LOCK == 1
-
       - name: Dependencies
         run: npm ci
-        if: matrix.config.NO_NPM_CI != 1
-
-      - name: Dependencies
-        run: npm install
-        if: matrix.config.NO_NPM_CI == 1
 
       - name: Build
         run: npm run build
+
+      - name: Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.config.node-version }}
+
+      - name: Node Version
+        run: node --version
+
+      - name: NPM Version
+        run: npm --version
 
       - name: Test
         run: npm run test
