@@ -259,8 +259,7 @@ overrides:
     rules:
       jsdoc/require-jsdoc: off
   - files:
-      - 'gulpfile.babel.js'
-      - 'gulp/*.js'
+      - 'babel.config.js'
     rules:
       import/no-extraneous-dependencies:
         - error
@@ -268,3 +267,5 @@ overrides:
           optionalDependencies: false
           peerDependencies: false
       jsdoc/require-jsdoc: off
+    parserOptions:
+      sourceType: script

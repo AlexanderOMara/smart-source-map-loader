@@ -25,14 +25,12 @@ yarn.lock
 /.gitattributes
 /.gitignore
 /.github
-/.babelrc
 /.editorconfig
 /.eslintignore
 /.eslintrc.yaml
 /.prettierrc.yaml
 /.prettierignore
-/gulpfile.babel.js
-/gulp
+/babel.config.js
 /spec
 /src
 
