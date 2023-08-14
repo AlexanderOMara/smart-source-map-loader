@@ -239,6 +239,10 @@ rules:
         MethodDefinition: true
       checkGetters: true
       checkSetters: true
+  jsdoc/tag-lines:
+    - warn
+    - never
+    - startLines: 1
 
 overrides:
   - files:

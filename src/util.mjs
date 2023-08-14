@@ -115,7 +115,7 @@ export function pathRelativeIfSub(from, to) {
  *
  * @param {string} str String.
  * @param {number} max String max length.
- * @param {string} [suffix=''] Suffix to use if too long.
+ * @param {string} suffix Suffix to use if too long.
  * @returns {string} Abbreviated or original string.
  */
 export function stringAbbrev(str, max, suffix = '') {
