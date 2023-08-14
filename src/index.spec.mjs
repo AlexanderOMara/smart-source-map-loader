@@ -21,7 +21,7 @@ function webpackVersions() {
 	}
 	if (
 		nodeVersion[0] > 10 ||
-		(nodeVersion[0] === 10 && nodeVersion[0] >= 13)
+		(nodeVersion[0] === 10 && nodeVersion[1] >= 13)
 	) {
 		if (nodeVersion[0] < 17) {
 			r.push(['5.0.0', 'webpack-5-0-0']);
