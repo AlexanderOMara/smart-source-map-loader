@@ -16,7 +16,7 @@
 		"webpack-loader"
 	],
 	"author": "Alexander O'Mara",
-	"copyright": "Copyright (c) 2018-2022 Alexander O'Mara",
+	"copyright": "Copyright (c) 2018-2023 Alexander O'Mara",
 	"license": "MPL-2.0",
 	"main": "lib/index",
 	"engines": {
