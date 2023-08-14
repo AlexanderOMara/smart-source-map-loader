@@ -32,7 +32,6 @@
 		"build": "gulp build",
 		"test": "gulp test",
 		"all": "gulp all",
-		"watch": "gulp watch",
 		"prepack": "gulp prepack"
 	},
 	"peerDependencies": {

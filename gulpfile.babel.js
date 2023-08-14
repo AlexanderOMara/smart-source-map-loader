@@ -161,12 +161,6 @@ gulp.task('test', async () => {
 	await exec('jasmine');
 });
 
-// watch
-
-gulp.task('watch', () => {
-	gulp.watch(['src/**/*'], gulp.series(['all']));
-});
-
 // all
 
 gulp.task('all', gulp.series(['clean', 'build', 'test', 'lint', 'formatted']));
