@@ -6,29 +6,7 @@ import nodeRequireFunction from 'node-require-function';
 
 import {Exception} from './exception';
 
-const require = nodeRequireFunction();
-
 const exceptionMessagePrefix = new Exception('').message;
-
-const nodeVersion = process.versions.node.split('.').map(Number);
-
-function webpackVersions() {
-	const r = [];
-	if (nodeVersion[0] < 17) {
-		r.push(['4.0.0', 'webpack-4-0-0']);
-		r.push(['4.46.0', 'webpack-4-46-0']);
-	}
-	if (
-		nodeVersion[0] > 10 ||
-		(nodeVersion[0] === 10 && nodeVersion[1] >= 13)
-	) {
-		if (nodeVersion[0] < 17) {
-			r.push(['5.0.0', 'webpack-5-0-0']);
-		}
-		r.push(['latest', 'webpack']);
-	}
-	return r;
-}
 
 async function webpackAsync(webpack, options, properties) {
 	const compiler = webpack(options);
@@ -511,6 +489,7 @@ function testFixtures(version, webpack) {
 	});
 }
 
-for (const [version, name] of webpackVersions()) {
-	testFixtures(version, require(name));
+const webpacks = nodeRequireFunction()(path.resolve('spec/webpacks'));
+for (const version of Object.keys(webpacks)) {
+	testFixtures(version, webpacks[version]);
 }

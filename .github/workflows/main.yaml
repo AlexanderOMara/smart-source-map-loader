@@ -61,6 +61,10 @@ jobs:
       - name: Dependencies
         run: npm ci
 
+      - name: 'Dependencies: webpack'
+        working-directory: ./spec/webpacks
+        run: npm ci
+
       - name: Build
         run: npm run build
 
