@@ -1,4 +1,4 @@
-/* eslint-env jasmine */
+import {strictEqual, deepStrictEqual} from 'assert';
 
 import {parse, pathsFromURL} from './comment';
 
@@ -38,145 +38,135 @@ function testSample(nl, d, url, block, spaces, lines) {
 	const sample = createSample(nl, d, urlFile, block, spaces, lines);
 	const parsed = parse(sample.all);
 
-	expect(parsed.body).toBe(sample.body);
-	expect(parsed.footer).toBe(sample.footer);
-	expect(parsed.comment).toBe(sample.comment);
-	expect(parsed.directive).toBe(sample.directive);
-	expect(parsed.url).toBe(sample.url);
+	strictEqual(parsed.body, sample.body);
+	strictEqual(parsed.footer, sample.footer);
+	strictEqual(parsed.comment, sample.comment);
+	strictEqual(parsed.directive, sample.directive);
+	strictEqual(parsed.url, sample.url);
 }
 
-describe('comment', () => {
-	describe('parse', () => {
-		for (const nl of ['\n', '\r', '\r\n']) {
-			describe(`newline: ${JSON.stringify(nl)}`, () => {
-				it('line comment', () => {
-					testSample(nl, '#', urlFile, false, 0, 0);
-				});
+for (const nl of ['\n', '\r', '\r\n']) {
+	const istr = `parse newline: ${JSON.stringify(nl)}`;
 
-				it('line comment space', () => {
-					testSample(nl, '#', urlFile, false, 1, 0);
-				});
-
-				it('line comment spaces', () => {
-					testSample(nl, '#', urlFile, false, 2, 0);
-				});
-
-				it('line comment newline', () => {
-					testSample(nl, '#', urlFile, false, 0, 1);
-				});
-
-				it('line comment newlines', () => {
-					testSample(nl, '#', urlFile, false, 0, 2);
-				});
-
-				it('line comment base64', () => {
-					testSample(nl, '#', urlBase64, false, 0, 0);
-				});
-
-				it('line comment obsolete', () => {
-					testSample(nl, '@', urlFile, false, 0, 0);
-				});
-
-				it('line comment space in name', () => {
-					testSample(nl, '#', urlFileSpace, false, 0, 0);
-				});
-
-				it('block comment', () => {
-					testSample(nl, '#', urlFile, true, 0, 0);
-				});
-
-				it('block comment space', () => {
-					testSample(nl, '#', urlFile, true, 1, 0);
-				});
-
-				it('block comment spaces', () => {
-					testSample(nl, '#', urlFile, true, 2, 0);
-				});
-
-				it('block comment newline', () => {
-					testSample(nl, '#', urlFile, true, 0, 1);
-				});
-
-				it('block comment newlines', () => {
-					testSample(nl, '#', urlFile, true, 0, 2);
-				});
-
-				it('block comment base64', () => {
-					testSample(nl, '#', urlBase64, true, 0, 0);
-				});
-
-				it('block comment obsolete', () => {
-					testSample(nl, '@', urlFile, true, 0, 0);
-				});
-
-				it('block comment space in name', () => {
-					testSample(nl, '#', urlFileSpace, true, 0, 0);
-				});
-
-				it('ignore comment in body', () => {
-					const parsed = parse(
-						[
-							'(function() {',
-							'//#sourceMappingURL=file.js.map',
-							'})()'
-						].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-
-				it('ignore comment before code', () => {
-					const parsed = parse(
-						[
-							'(function() {})()',
-							'//#sourceMappingURL=file.js.map',
-							';'
-						].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-
-				it('ignore comment not last line+line', () => {
-					const parsed = parse(
-						['//#sourceMappingURL=file.js.map', '//'].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-
-				it('ignore comment not last line+block', () => {
-					const parsed = parse(
-						['//#sourceMappingURL=file.js.map', '/**/'].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-
-				it('ignore comment not last block+block', () => {
-					const parsed = parse(
-						['/*#sourceMappingURL=file.js.map*/', '/**/'].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-
-				it('ignore comment not last block+line', () => {
-					const parsed = parse(
-						['/*#sourceMappingURL=file.js.map*/', '//'].join(nl)
-					);
-					expect(parsed).toBe(null);
-				});
-			});
-		}
+	test(`${istr}: line comment`, () => {
+		testSample(nl, '#', urlFile, false, 0, 0);
 	});
 
-	describe('pathsFromURL', () => {
-		it('single', () => {
-			const path = 'test ing.js.map';
-			const paths = pathsFromURL(path);
-			expect(paths).toEqual([path]);
-		});
-
-		it('multiple', () => {
-			const path = 'test%20ing.js.map';
-			const paths = pathsFromURL(path);
-			expect(paths).toEqual([path, decodeURI(path)]);
-		});
+	test(`${istr}: line comment space`, () => {
+		testSample(nl, '#', urlFile, false, 1, 0);
 	});
+
+	test(`${istr}: line comment spaces`, () => {
+		testSample(nl, '#', urlFile, false, 2, 0);
+	});
+
+	test(`${istr}: line comment newline`, () => {
+		testSample(nl, '#', urlFile, false, 0, 1);
+	});
+
+	test(`${istr}: line comment newlines`, () => {
+		testSample(nl, '#', urlFile, false, 0, 2);
+	});
+
+	test(`${istr}: line comment base64`, () => {
+		testSample(nl, '#', urlBase64, false, 0, 0);
+	});
+
+	test(`${istr}: line comment obsolete`, () => {
+		testSample(nl, '@', urlFile, false, 0, 0);
+	});
+
+	test(`${istr}: line comment space in name`, () => {
+		testSample(nl, '#', urlFileSpace, false, 0, 0);
+	});
+
+	test(`${istr}: block comment`, () => {
+		testSample(nl, '#', urlFile, true, 0, 0);
+	});
+
+	test(`${istr}: block comment space`, () => {
+		testSample(nl, '#', urlFile, true, 1, 0);
+	});
+
+	test(`${istr}: block comment spaces`, () => {
+		testSample(nl, '#', urlFile, true, 2, 0);
+	});
+
+	test(`${istr}: block comment newline`, () => {
+		testSample(nl, '#', urlFile, true, 0, 1);
+	});
+
+	test(`${istr}: block comment newlines`, () => {
+		testSample(nl, '#', urlFile, true, 0, 2);
+	});
+
+	test(`${istr}: block comment base64`, () => {
+		testSample(nl, '#', urlBase64, true, 0, 0);
+	});
+
+	test(`${istr}: block comment obsolete`, () => {
+		testSample(nl, '@', urlFile, true, 0, 0);
+	});
+
+	test(`${istr}: block comment space in name`, () => {
+		testSample(nl, '#', urlFileSpace, true, 0, 0);
+	});
+
+	test(`${istr}: ignore comment in body`, () => {
+		const parsed = parse(
+			['(function() {', '//#sourceMappingURL=file.js.map', '})()'].join(
+				nl
+			)
+		);
+		strictEqual(parsed, null);
+	});
+
+	test(`${istr}: ignore comment before code`, () => {
+		const parsed = parse(
+			['(function() {})()', '//#sourceMappingURL=file.js.map', ';'].join(
+				nl
+			)
+		);
+		strictEqual(parsed, null);
+	});
+
+	test(`${istr}: ignore comment not last line+line`, () => {
+		const parsed = parse(
+			['//#sourceMappingURL=file.js.map', '//'].join(nl)
+		);
+		strictEqual(parsed, null);
+	});
+
+	test(`${istr}: ignore comment not last line+block`, () => {
+		const parsed = parse(
+			['//#sourceMappingURL=file.js.map', '/**/'].join(nl)
+		);
+		strictEqual(parsed, null);
+	});
+
+	test(`${istr}: ignore comment not last block+block`, () => {
+		const parsed = parse(
+			['/*#sourceMappingURL=file.js.map*/', '/**/'].join(nl)
+		);
+		strictEqual(parsed, null);
+	});
+
+	test(`${istr}: ignore comment not last block+line`, () => {
+		const parsed = parse(
+			['/*#sourceMappingURL=file.js.map*/', '//'].join(nl)
+		);
+		strictEqual(parsed, null);
+	});
+}
+
+test('pathsFromURL: single', () => {
+	const path = 'test ing.js.map';
+	const paths = pathsFromURL(path);
+	deepStrictEqual(paths, [path]);
+});
+
+test('pathsFromURL: multiple', () => {
+	const path = 'test%20ing.js.map';
+	const paths = pathsFromURL(path);
+	deepStrictEqual(paths, [path, decodeURI(path)]);
 });

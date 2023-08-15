@@ -1,13 +1,11 @@
-/* eslint-env jasmine */
+import {strictEqual} from 'assert';
 
 import {NAME, VERSION} from './meta';
 
-describe('meta', () => {
-	it('NAME', () => {
-		expect(typeof NAME).toBe('string');
-	});
+test('NAME', () => {
+	strictEqual(typeof NAME, 'string');
+});
 
-	it('VERSION', () => {
-		expect(typeof VERSION).toBe('string');
-	});
+test('VERSION', () => {
+	strictEqual(typeof VERSION, 'string');
 });

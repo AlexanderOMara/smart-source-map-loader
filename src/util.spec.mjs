@@ -1,5 +1,4 @@
-/* eslint-env jasmine */
-
+import {strictEqual} from 'assert';
 import path from 'path';
 
 import {
@@ -73,238 +72,210 @@ const mapIndexed = JSON.stringify({
 	]
 });
 
-describe('util', () => {
-	describe('isAbsoluteURL', () => {
-		it('true', () => {
-			expect(isAbsoluteURL('/')).toBe(true);
-			expect(isAbsoluteURL('//')).toBe(true);
-			expect(isAbsoluteURL('http://')).toBe(true);
-			expect(isAbsoluteURL('https://')).toBe(true);
-			expect(isAbsoluteURL('ftp://')).toBe(true);
-		});
+test('isAbsoluteURL: true', () => {
+	strictEqual(isAbsoluteURL('/'), true);
+	strictEqual(isAbsoluteURL('//'), true);
+	strictEqual(isAbsoluteURL('http://'), true);
+	strictEqual(isAbsoluteURL('https://'), true);
+	strictEqual(isAbsoluteURL('ftp://'), true);
+});
 
-		it('false', () => {
-			expect(isAbsoluteURL('.')).toBe(false);
-			expect(isAbsoluteURL('./')).toBe(false);
-			expect(isAbsoluteURL('path')).toBe(false);
-			expect(isAbsoluteURL('./path')).toBe(false);
-			expect(isAbsoluteURL('path/slashes')).toBe(false);
-			expect(isAbsoluteURL('./path/slashes')).toBe(false);
-		});
+test('isAbsoluteURL: false', () => {
+	strictEqual(isAbsoluteURL('.'), false);
+	strictEqual(isAbsoluteURL('./'), false);
+	strictEqual(isAbsoluteURL('path'), false);
+	strictEqual(isAbsoluteURL('./path'), false);
+	strictEqual(isAbsoluteURL('path/slashes'), false);
+	strictEqual(isAbsoluteURL('./path/slashes'), false);
+});
+
+test('isDataURI: true', () => {
+	strictEqual(isDataURI('data:'), true);
+	strictEqual(isDataURI('DaTa:'), true);
+	strictEqual(isDataURI('DATA:'), true);
+	strictEqual(isDataURI('data:test/plain;charset=utf-8;base64,'), true);
+});
+
+test('isDataURI: false', () => {
+	strictEqual(isDataURI('http:'), false);
+	strictEqual(isDataURI('https:'), false);
+	strictEqual(isDataURI('data'), false);
+	strictEqual(isDataURI('./data:'), false);
+	strictEqual(isDataURI('/data:'), false);
+	strictEqual(isDataURI('_data:'), false);
+});
+
+test('pathResolve: double slash', () => {
+	strictEqual(pathResolve('/aa//bb/'), '/aa/bb/');
+});
+
+test('pathResolve: just dot', () => {
+	strictEqual(pathResolve('.'), '');
+});
+
+test('pathResolve: dot slash', () => {
+	strictEqual(pathResolve('./aa'), 'aa');
+	strictEqual(pathResolve('/aa/.'), '/aa/');
+	strictEqual(pathResolve('/aa/./bb/./cc/'), '/aa/bb/cc/');
+	strictEqual(pathResolve('/aa/././bb/././cc/'), '/aa/bb/cc/');
+});
+
+test('pathResolve: dot dot slash', () => {
+	strictEqual(pathResolve('/aa/..'), '/');
+	strictEqual(pathResolve('/aa/bb/..'), '/aa/');
+	strictEqual(pathResolve('/aa/bb/../'), '/aa/');
+	strictEqual(pathResolve('/aa/bb/../../aa/bb/../'), '/aa/');
+	strictEqual(pathResolve('../../../aa'), '../../../aa');
+});
+
+test('rebaseURL: relative', () => {
+	strictEqual(rebaseURL('aaa/file', 'bbb'), 'aaa/bbb');
+	strictEqual(rebaseURL('aaa/file', './bbb'), 'aaa/bbb');
+	strictEqual(rebaseURL('aaa/file', '../bbb'), 'bbb');
+	strictEqual(rebaseURL('aaa/file', ''), 'aaa/file');
+	strictEqual(rebaseURL('aaa/file', '.'), 'aaa/');
+	strictEqual(rebaseURL('aaa/file', './'), 'aaa/');
+});
+
+test('rebaseURL: absolute', () => {
+	strictEqual(rebaseURL('/aaa/file', '/bbb'), '/bbb');
+	strictEqual(
+		rebaseURL('/a/b', 'http://example.com/'),
+		'http://example.com/'
+	);
+});
+
+test('rebaseURL: data URI', () => {
+	strictEqual(rebaseURL('file', 'data:'), 'data:');
+	strictEqual(rebaseURL('/aaa/file', 'data:'), 'data:');
+});
+
+test('sourceMapMappings: single', () => {
+	const map = JSON.parse(mapSingle);
+	const mappings = sourceMapMappings(map);
+
+	strictEqual(mappings.length, 1);
+	strictEqual(mappings[0], map);
+});
+
+test('sourceMapMappings: indexed', () => {
+	const map = JSON.parse(mapIndexed);
+	const mappings = sourceMapMappings(map);
+
+	strictEqual(mappings.length, 2);
+	strictEqual(mappings[0], map.sections[0].map);
+	strictEqual(mappings[1], map.sections[1].map);
+});
+
+for (const info of [
+	['', 'test/file.js.map', 'test/'],
+	['.', 'test/file.js.map', 'test/'],
+	['./', 'test/file.js.map', 'test/'],
+	['..', 'test/file.js.map', ''],
+	['../other', 'test/file.js.map', 'other'],
+	[null, '', '']
+]) {
+	const [root, path, result] = info;
+	const istr = info.map(e => JSON.stringify(e)).join(' ');
+
+	test(`sourceMapRebase: ${istr}: single`, () => {
+		const map = JSON.parse(mapSingle);
+		map.sourceRoot = root;
+		sourceMapRebase(map, path);
+		strictEqual(map.sourceRoot, result);
 	});
 
-	describe('isDataURI', () => {
-		it('true', () => {
-			expect(isDataURI('data:')).toBe(true);
-			expect(isDataURI('DaTa:')).toBe(true);
-			expect(isDataURI('DATA:')).toBe(true);
-			expect(isDataURI('data:test/plain;charset=utf-8;base64,')).toBe(
-				true
-			);
-		});
-
-		it('false', () => {
-			expect(isDataURI('http:')).toBe(false);
-			expect(isDataURI('https:')).toBe(false);
-			expect(isDataURI('data')).toBe(false);
-			expect(isDataURI('./data:')).toBe(false);
-			expect(isDataURI('/data:')).toBe(false);
-			expect(isDataURI('_data:')).toBe(false);
-		});
-	});
-
-	describe('pathResolve', () => {
-		it('double slash', () => {
-			expect(pathResolve('/aa//bb/')).toBe('/aa/bb/');
-		});
-
-		it('just dot', () => {
-			expect(pathResolve('.')).toBe('');
-		});
-
-		it('dot slash', () => {
-			expect(pathResolve('./aa')).toBe('aa');
-			expect(pathResolve('/aa/.')).toBe('/aa/');
-			expect(pathResolve('/aa/./bb/./cc/')).toBe('/aa/bb/cc/');
-			expect(pathResolve('/aa/././bb/././cc/')).toBe('/aa/bb/cc/');
-		});
-
-		it('dot dot slash', () => {
-			expect(pathResolve('/aa/..')).toBe('/');
-			expect(pathResolve('/aa/bb/..')).toBe('/aa/');
-			expect(pathResolve('/aa/bb/../')).toBe('/aa/');
-			expect(pathResolve('/aa/bb/../../aa/bb/../')).toBe('/aa/');
-			expect(pathResolve('../../../aa')).toBe('../../../aa');
-		});
-	});
-
-	describe('rebaseURL', () => {
-		it('relative', () => {
-			expect(rebaseURL('aaa/file', 'bbb')).toBe('aaa/bbb');
-			expect(rebaseURL('aaa/file', './bbb')).toBe('aaa/bbb');
-			expect(rebaseURL('aaa/file', '../bbb')).toBe('bbb');
-			expect(rebaseURL('aaa/file', '')).toBe('aaa/file');
-			expect(rebaseURL('aaa/file', '.')).toBe('aaa/');
-			expect(rebaseURL('aaa/file', './')).toBe('aaa/');
-		});
-
-		it('absolute', () => {
-			expect(rebaseURL('/aaa/file', '/bbb')).toBe('/bbb');
-			expect(rebaseURL('/a/b', 'http://example.com/')).toBe(
-				'http://example.com/'
-			);
-		});
-
-		it('data URI', () => {
-			expect(rebaseURL('file', 'data:')).toBe('data:');
-			expect(rebaseURL('/aaa/file', 'data:')).toBe('data:');
-		});
-	});
-
-	describe('sourceMapMappings', () => {
-		it('single', () => {
-			const map = JSON.parse(mapSingle);
-			const mappings = sourceMapMappings(map);
-
-			expect(mappings.length).toBe(1);
-			expect(mappings[0]).toBe(map);
-		});
-
-		it('indexed', () => {
-			const map = JSON.parse(mapIndexed);
-			const mappings = sourceMapMappings(map);
-
-			expect(mappings.length).toBe(2);
-			expect(mappings[0]).toBe(map.sections[0].map);
-			expect(mappings[1]).toBe(map.sections[1].map);
-		});
-	});
-
-	describe('sourceMapRebase', () => {
-		for (const info of [
-			['', 'test/file.js.map', 'test/'],
-			['.', 'test/file.js.map', 'test/'],
-			['./', 'test/file.js.map', 'test/'],
-			['..', 'test/file.js.map', ''],
-			['../other', 'test/file.js.map', 'other'],
-			[null, '', '']
-		]) {
-			const [root, path, result] = info;
-
-			describe(info.map(e => JSON.stringify(e)).join(' '), () => {
-				it('single', () => {
-					const map = JSON.parse(mapSingle);
-					map.sourceRoot = root;
-					sourceMapRebase(map, path);
-					expect(map.sourceRoot).toBe(result);
-				});
-
-				it('indexed', () => {
-					const map = JSON.parse(mapSingle);
-					for (const mapping of sourceMapMappings(map)) {
-						mapping.sourceRoot = root;
-					}
-					sourceMapRebase(map, path);
-					for (const mapping of sourceMapMappings(map)) {
-						expect(mapping.sourceRoot).toBe(result);
-					}
-				});
-			});
+	test(`sourceMapRebase: ${istr}: indexed`, () => {
+		const map = JSON.parse(mapSingle);
+		for (const mapping of sourceMapMappings(map)) {
+			mapping.sourceRoot = root;
+		}
+		sourceMapRebase(map, path);
+		for (const mapping of sourceMapMappings(map)) {
+			strictEqual(mapping.sourceRoot, result);
 		}
 	});
+}
 
-	describe('pathRelativeIfSub', () => {
-		it('relative', () => {
-			expect(
-				pathRelativeIfSub(
-					path.join('path', 'aaa', 'bbb'),
-					path.join('path', 'aaa', 'bbb', 'ccc')
-				)
-			).toBe('ccc');
-		});
+test('pathRelativeIfSub: relative', () => {
+	strictEqual(
+		pathRelativeIfSub(
+			path.join('path', 'aaa', 'bbb'),
+			path.join('path', 'aaa', 'bbb', 'ccc')
+		),
+		'ccc'
+	);
+});
 
-		it('parent', () => {
-			expect(
-				pathRelativeIfSub(
-					path.join('path', 'aaa', 'bbb', 'ccc'),
-					path.join('path', 'aaa', 'bbb')
-				)
-			).toBe(path.join('path', 'aaa', 'bbb'));
-		});
+test('pathRelativeIfSub: parent', () => {
+	strictEqual(
+		pathRelativeIfSub(
+			path.join('path', 'aaa', 'bbb', 'ccc'),
+			path.join('path', 'aaa', 'bbb')
+		),
+		path.join('path', 'aaa', 'bbb')
+	);
+});
 
-		it('sibling', () => {
-			expect(
-				pathRelativeIfSub(
-					path.join('path', 'dira'),
-					path.join('path', 'dirb')
-				)
-			).toBe(path.join('path', 'dirb'));
-		});
+test('pathRelativeIfSub: sibling', () => {
+	strictEqual(
+		pathRelativeIfSub(path.join('path', 'dira'), path.join('path', 'dirb')),
+		path.join('path', 'dirb')
+	);
+});
 
-		it('root', () => {
-			expect(
-				pathRelativeIfSub(
-					path.join('path', 'dira'),
-					path.join('path', 'dirb')
-				)
-			).toBe(path.join('path', 'dirb'));
-		});
-	});
+test('pathRelativeIfSub: root', () => {
+	strictEqual(
+		pathRelativeIfSub(path.join('path', 'dira'), path.join('path', 'dirb')),
+		path.join('path', 'dirb')
+	);
+});
 
-	describe('stringAbbrev', () => {
-		it('-1', () => {
-			expect(stringAbbrev('abcdefg', 8)).toBe('abcdefg');
-		});
+test('stringAbbrev: -1', () => {
+	strictEqual(stringAbbrev('abcdefg', 8), 'abcdefg');
+});
 
-		it('0', () => {
-			expect(stringAbbrev('abcdefg', 7)).toBe('abcdefg');
-		});
+test('stringAbbrev: 0', () => {
+	strictEqual(stringAbbrev('abcdefg', 7), 'abcdefg');
+});
 
-		it('+1', () => {
-			expect(stringAbbrev('abcdefg', 6)).toBe('abcdef');
-		});
+test('stringAbbrev: +1', () => {
+	strictEqual(stringAbbrev('abcdefg', 6), 'abcdef');
+});
 
-		it('+1 ...', () => {
-			expect(stringAbbrev('abcdefg', 6, '...')).toBe('abc...');
-		});
-	});
+test('stringAbbrev: +1 ...', () => {
+	strictEqual(stringAbbrev('abcdefg', 6, '...'), 'abc...');
+});
 
-	describe('decodeURISafe', () => {
-		it('valid', () => {
-			expect(decodeURISafe('testing%20123')).toBe('testing 123');
-		});
+test('decodeURISafe: valid', () => {
+	strictEqual(decodeURISafe('testing%20123'), 'testing 123');
+});
 
-		it('invalid', () => {
-			expect(decodeURISafe('%%')).toBe(null);
-		});
-	});
+test('decodeURISafe: invalid', () => {
+	strictEqual(decodeURISafe('%%'), null);
+});
 
-	describe('stringOrBufferCast', () => {
-		it('string', () => {
-			expect(stringOrBufferCast('hello')).toBe('hello');
-		});
+test('stringOrBufferCast: string', () => {
+	strictEqual(stringOrBufferCast('hello'), 'hello');
+});
 
-		it('buffer', () => {
-			expect(stringOrBufferCast(Buffer.from('hello'))).toBe('hello');
-		});
-	});
+test('stringOrBufferCast: buffer', () => {
+	strictEqual(stringOrBufferCast(Buffer.from('hello')), 'hello');
+});
 
-	describe('readFileAsync', () => {
-		it('pass', async () => {
-			const pkg = JSON.parse(await readFileAsync('package.json', 'utf8'));
-			expect(typeof pkg).toBe('object');
-		});
+test('readFileAsync: pass', async () => {
+	const pkg = JSON.parse(await readFileAsync('package.json', 'utf8'));
+	strictEqual(typeof pkg, 'object');
+});
 
-		it('fail', async () => {
-			const path = 'spec/fixtures/does-not-exist';
-			let error = null;
-			try {
-				await readFileAsync(path, 'utf8');
-			} catch (err) {
-				error = err;
-			}
+test('readFileAsync: fail', async () => {
+	const path = 'spec/fixtures/does-not-exist';
+	let error = null;
+	try {
+		await readFileAsync(path, 'utf8');
+	} catch (err) {
+		error = err;
+	}
 
-			expect(typeof error.path).toBe('string');
-		});
-	});
+	strictEqual(typeof error.path, 'string');
 });

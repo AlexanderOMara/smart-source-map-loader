@@ -1,17 +1,15 @@
-/* eslint-env jasmine */
+import {strictEqual} from 'assert';
 
 import {Exception} from './exception';
 import {NAME} from './meta';
 
-describe('exception', () => {
-	it('message', () => {
-		const msg = 'hello';
-		const ex = new Exception(msg);
-		expect(ex.message).toBe(`${NAME}: ${msg}`);
-	});
+test('exception: message', () => {
+	const msg = 'hello';
+	const ex = new Exception(msg);
+	strictEqual(ex.message, `${NAME}: ${msg}`);
+});
 
-	it('message empty', () => {
-		const ex = new Exception('');
-		expect(ex.message).toBe(`${NAME}: `);
-	});
+test('exception: message empty', () => {
+	const ex = new Exception('');
+	strictEqual(ex.message, `${NAME}: `);
 });

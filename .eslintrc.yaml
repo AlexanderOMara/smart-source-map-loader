@@ -262,6 +262,8 @@ overrides:
       - '*.spec.mjsx'
     rules:
       jsdoc/require-jsdoc: off
+    globals:
+      test: true
   - files:
       - 'babel.config.js'
     rules:
