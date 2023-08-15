@@ -1,8 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
+  - package-ecosystem: npm
     schedule:
-      interval: 'weekly'
-    directory: '/spec'
+      interval: weekly
+    directory: /spec
     ignore:
       - dependency-name: '*'
