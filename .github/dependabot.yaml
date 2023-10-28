@@ -4,6 +4,6 @@ updates:
   - package-ecosystem: npm
     schedule:
       interval: weekly
-    directory: /spec
+    directory: /spec/webpacks
     ignore:
       - dependency-name: '*'
