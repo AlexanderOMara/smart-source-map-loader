@@ -25,7 +25,7 @@
 	"repository": "https://github.com/AlexanderOMara/smart-source-map-loader.git",
 	"bugs": "https://github.com/AlexanderOMara/smart-source-map-loader/issues",
 	"scripts": {
-		"clean": "rimraf *.log* lib",
+		"clean": "rimraf lib",
 		"lint": "eslint . --ext js,mjs",
 		"format": "prettier -w .",
 		"formatted": "prettier -c .",
