@@ -3,7 +3,7 @@
 	"name": "-",
 	"main": "index.js",
 	"devDependencies": {
-		"webpack": "^5.88.2",
+		"webpack": "^5.91.0",
 		"webpack-4-0-0": "npm:webpack@4.0.0",
 		"webpack-4-46-0": "npm:webpack@4.46.0",
 		"webpack-5-0-0": "npm:webpack@5.0.0"
