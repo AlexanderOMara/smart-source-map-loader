@@ -31,28 +31,31 @@ jobs:
             node-version: '18.12.0' # LTS
 
           - runs-on: ubuntu-latest
-            node-version: '18.18.0' # LTS (current)
+            node-version: '20.9.0' # LTS
+
+          - runs-on: ubuntu-latest
+            node-version: '20.12.2' # LTS (current)
             CODE_CHECK: 1
 
           - runs-on: ubuntu-latest
-            node-version: '20.8.0'
+            node-version: '21.7.3'
 
           - runs-on: windows-latest
-            node-version: '20.8.0'
+            node-version: '21.7.3'
 
           - runs-on: macos-latest
-            node-version: '20.8.0'
+            node-version: '21.7.3'
 
     runs-on: ${{ matrix.config.runs-on }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.18.0'
+          node-version: '20.12.2'
 
       - name: Node Version
         run: node --version
@@ -71,7 +74,7 @@ jobs:
         run: npm run build
 
       - name: Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.config.node-version }}
 
@@ -100,12 +103,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.18.0'
+          node-version: '20.12.2'
           registry-url: https://registry.npmjs.org/
 
       - name: Dependencies
