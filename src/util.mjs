@@ -141,20 +141,6 @@ export function decodeURISafe(str) {
 }
 
 /**
- * Convert string or Buffer to string.
- *
- * @param {string|Buffer} data String or Buffer data.
- * @param {string} encoding Buffer encoding.
- * @returns {string} String value.
- */
-export function stringOrBufferCast(data, encoding = 'utf8') {
-	if (typeof data === 'string') {
-		return data;
-	}
-	return data.toString(encoding);
-}
-
-/**
  * Read a file asyncronousely.
  *
  * @param {string} path File path.

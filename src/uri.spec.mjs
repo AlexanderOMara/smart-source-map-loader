@@ -36,7 +36,7 @@ for (const [uri, info] of [
 			strictEqual(d.charset, info.charset);
 			strictEqual(d.base64, info.base64);
 			strictEqual(d.data, info.data);
-			strictEqual(d.body().toString(), info.body);
+			strictEqual(d.text(), info.body);
 		} else {
 			strictEqual(d, null);
 		}

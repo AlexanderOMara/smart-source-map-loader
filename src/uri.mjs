@@ -1,3 +1,5 @@
+const US_ASCII = 'US-ASCII';
+
 /**
  * Decode percents in string.
  *
@@ -32,7 +34,7 @@ export function data(uri) {
 		: mediaInfo;
 	const [mimeType] = mediaType.split(';', 1);
 	const m2 = mediaType.match(/;charset=([^;]*)(;|$)/iu);
-	const charset = (m2 ? m2[1] : '') || 'US-ASCII';
+	const charset = (m2 ? m2[1] : '') || US_ASCII;
 	return {
 		mediaType,
 		mimeType,
@@ -47,8 +49,20 @@ export function data(uri) {
 		 */
 		body() {
 			return Buffer.from(
-				decodePercents(data),
-				base64 ? 'base64' : 'utf8'
+				decodePercents(this.data),
+				this.base64 ? 'base64' : 'utf8'
+			);
+		},
+
+		/**
+		 * Get body as text.
+		 *
+		 * @returns {string} Text data.
+		 */
+		text() {
+			const {charset} = this;
+			return this.body().toString(
+				charset.toUpperCase() === US_ASCII ? 'ascii' : charset
 			);
 		}
 	};

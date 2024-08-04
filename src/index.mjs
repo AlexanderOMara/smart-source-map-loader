@@ -10,7 +10,6 @@ import {
 	sourceMapRebase,
 	pathRelativeIfSub,
 	stringAbbrev,
-	stringOrBufferCast,
 	readFileAsync
 } from './util';
 import {data} from './uri';
@@ -84,9 +83,9 @@ export default async function (source, map, meta) {
 	const resolverMulti = createResolverMulti(resolver);
 
 	// If passed a buffer then convert to a string or emit warning and skip.
-	let sourceString = null;
+	let text;
 	try {
-		sourceString = stringOrBufferCast(source, 'utf8');
+		text = typeof source === 'string' ? source : source.toString('utf8');
 	} catch (err) {
 		emitWarning(new Exception(`Failed to cast source to string: ${err}`));
 		// eslint-disable-next-line prefer-rest-params
@@ -95,7 +94,7 @@ export default async function (source, map, meta) {
 	}
 
 	// Parse source map comment or pass the arguments straight through.
-	const parsed = commentParse(sourceString);
+	const parsed = commentParse(text);
 	if (!parsed) {
 		// eslint-disable-next-line prefer-rest-params
 		callback(null, ...arguments);
@@ -126,7 +125,7 @@ export default async function (source, map, meta) {
 
 		// Attempt to decode source map content.
 		try {
-			mapCode = dataURI.body().toString(dataURI.charset);
+			mapCode = dataURI.text();
 		} catch (err) {
 			emitWarning(
 				new Exception(`Failed to decode data URI: ${mapInfo}: ${err}`)

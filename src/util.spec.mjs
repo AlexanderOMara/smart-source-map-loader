@@ -11,7 +11,6 @@ import {
 	pathRelativeIfSub,
 	stringAbbrev,
 	decodeURISafe,
-	stringOrBufferCast,
 	readFileAsync
 } from './util';
 
@@ -253,14 +252,6 @@ test('decodeURISafe: valid', () => {
 
 test('decodeURISafe: invalid', () => {
 	strictEqual(decodeURISafe('%%'), null);
-});
-
-test('stringOrBufferCast: string', () => {
-	strictEqual(stringOrBufferCast('hello'), 'hello');
-});
-
-test('stringOrBufferCast: buffer', () => {
-	strictEqual(stringOrBufferCast(Buffer.from('hello')), 'hello');
 });
 
 test('readFileAsync: pass', async () => {
