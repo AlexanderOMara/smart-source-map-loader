@@ -54,6 +54,7 @@ function createResolverMulti(resolver) {
 			try {
 				// eslint-disable-next-line no-await-in-loop
 				return await resolver(context, request);
+				// eslint-disable-next-line no-unused-vars
 			} catch (err) {
 				// Do nothing.
 			}
@@ -62,7 +63,7 @@ function createResolverMulti(resolver) {
 	};
 }
 
-// eslint-disable-next-line import/no-default-export, jsdoc/require-jsdoc, no-unused-vars
+// eslint-disable-next-line jsdoc/require-jsdoc, no-unused-vars
 export default async function (source, map, meta) {
 	// eslint-disable-next-line no-invalid-this
 	const self = this;

@@ -7,6 +7,7 @@
 export function decodePercents(s) {
 	try {
 		return decodeURIComponent(s);
+		// eslint-disable-next-line no-unused-vars
 	} catch (err) {
 		// Do nothing.
 	}

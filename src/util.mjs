@@ -133,6 +133,7 @@ export function stringAbbrev(str, max, suffix = '') {
 export function decodeURISafe(str) {
 	try {
 		return decodeURI(str);
+		// eslint-disable-next-line no-unused-vars
 	} catch (err) {
 		// Do nothing.
 	}
