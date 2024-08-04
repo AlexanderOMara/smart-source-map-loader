@@ -34,17 +34,17 @@ jobs:
             node-version: '20.9.0' # LTS
 
           - runs-on: ubuntu-latest
-            node-version: '20.12.2' # LTS (current)
+            node-version: '20.16.0' # LTS (current)
             CODE_CHECK: 1
 
           - runs-on: ubuntu-latest
-            node-version: '21.7.3'
+            node-version: '22.5.1'
 
           - runs-on: windows-latest
-            node-version: '21.7.3'
+            node-version: '22.5.1'
 
           - runs-on: macos-latest
-            node-version: '21.7.3'
+            node-version: '22.5.1'
 
     runs-on: ${{ matrix.config.runs-on }}
 
@@ -55,7 +55,7 @@ jobs:
       - name: Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20.12.2'
+          node-version: '20.16.0'
 
       - name: Node Version
         run: node --version
@@ -108,7 +108,7 @@ jobs:
       - name: Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20.12.2'
+          node-version: '20.16.0'
           registry-url: https://registry.npmjs.org/
 
       - name: Dependencies
