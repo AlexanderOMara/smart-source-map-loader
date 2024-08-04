@@ -6,7 +6,7 @@ const nodeVersion = process.versions.node.split('.').map(Number);
 
 if (nodeVersion[0] < 17) {
 	exports['4.0.0'] = require('webpack-4-0-0');
-	exports['4.46.0'] = require('webpack-4-46-0');
+	exports['4.47.0'] = require('webpack-4-47-0');
 }
 if (nodeVersion[0] > 10 || (nodeVersion[0] === 10 && nodeVersion[1] >= 13)) {
 	if (nodeVersion[0] < 17) {
