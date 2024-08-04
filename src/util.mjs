@@ -144,14 +144,14 @@ export function decodeURISafe(str) {
  * Convert string or Buffer to string.
  *
  * @param {string|Buffer} data String or Buffer data.
- * @param {Array} args Optional arguments to pass to Buffer toString method.
+ * @param {string} encoding Buffer encoding.
  * @returns {string} String value.
  */
-export function stringOrBufferCast(data, ...args) {
+export function stringOrBufferCast(data, encoding = 'utf8') {
 	if (typeof data === 'string') {
 		return data;
 	}
-	return data.toString(...args);
+	return data.toString(encoding);
 }
 
 /**
